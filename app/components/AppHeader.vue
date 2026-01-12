@@ -3,10 +3,8 @@
     <nav class="container mx-auto px-4 h-16 flex items-center justify-between">
       <!-- Logo -->
       <NuxtLink to="/" class="flex items-center gap-2">
-        <span class="text-2xl font-bold text-red-600 tracking-tighter"
-          >YAMAHA</span
-        >
-        <span class="text-xl font-semibold text-gray-800">DETA BALI</span>
+        <img src="@/assets/image/logo.png" class="w-10" />
+        <img src="@/assets/image/yamaha.png" class="h-6" />
       </NuxtLink>
 
       <!-- Desktop Menu -->

@@ -169,12 +169,6 @@
 </template>
 
 <script setup lang="ts">
-import {
-  ref as storageRef,
-  uploadBytes,
-  getDownloadURL,
-} from "firebase/storage";
-
 const props = defineProps<{
   initialData?: any;
   loading?: boolean;
@@ -182,7 +176,8 @@ const props = defineProps<{
 
 const emit = defineEmits(["submit"]);
 
-const storage = useFirebaseStorage();
+const config = useRuntimeConfig();
+const selectedFile = ref<File | null>(null);
 const uploadProgress = ref(0);
 const isUploading = ref(false);
 
@@ -210,30 +205,32 @@ watch(
   { immediate: true }
 );
 
-const handleFileUpload = async (event: any) => {
+const handleFileUpload = (event: any) => {
   const file = event.target.files[0];
   if (!file) return;
 
-  isUploading.value = true;
-  uploadProgress.value = 0;
+  selectedFile.value = file;
+  form.value.image = URL.createObjectURL(file);
+};
 
-  try {
-    const fileName = `products/${Date.now()}_${file.name}`;
-    const fileRef = storageRef(storage, fileName);
+const uploadToImgBB = async (file: File) => {
+  const formData = new FormData();
+  formData.append("image", file);
 
-    // Upload
-    const snapshot = await uploadBytes(fileRef, file);
+  const response = await fetch(
+    `https://api.imgbb.com/1/upload?key=${config.public.imgbbApiKey}`,
+    {
+      method: "POST",
+      body: formData,
+    }
+  );
 
-    // Get URL
-    const url = await getDownloadURL(snapshot.ref);
-    form.value.image = url;
-    alert("Gambar berhasil diupload!");
-  } catch (e) {
-    console.error(e);
-    alert("Gagal mengupload gambar: " + (e as any).message);
-  } finally {
-    isUploading.value = false;
+  const data = await response.json();
+  if (!data.success) {
+    throw new Error(data.error?.message || "Upload failed");
   }
+
+  return data.data.url;
 };
 
 const addSpec = () => {
@@ -244,7 +241,19 @@ const removeSpec = (index: number) => {
   form.value.specs.splice(index, 1);
 };
 
-const save = () => {
-  emit("submit", form.value);
+const save = async () => {
+  try {
+    if (selectedFile.value) {
+      isUploading.value = true;
+      const imageUrl = await uploadToImgBB(selectedFile.value);
+      form.value.image = imageUrl;
+    }
+    emit("submit", form.value);
+  } catch (e) {
+    console.error(e);
+    alert("Gagal mengupload gambar: " + (e as any).message);
+  } finally {
+    isUploading.value = false;
+  }
 };
 </script>

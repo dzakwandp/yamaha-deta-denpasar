@@ -7,7 +7,7 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  modules: ["nuxt-vuefire"],
+  modules: ["nuxt-vuefire", "@pinia/nuxt"],
   vuefire: {
     config: {
       apiKey: process.env.FIREBASE_API_KEY,
@@ -16,6 +16,11 @@ export default defineNuxtConfig({
       storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
       messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
       appId: process.env.FIREBASE_APP_ID,
+    },
+  },
+  runtimeConfig: {
+    public: {
+      imgbbApiKey: process.env.IMGBB_API_KEY,
     },
   },
   app: {

@@ -21,6 +21,12 @@
           active-class="bg-gray-800 text-white font-medium">
           <span>📦</span> Produk
         </NuxtLink>
+        <NuxtLink
+          to="/dashadmin/profiles"
+          class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-gray-800 rounded-xl transition-colors"
+          active-class="bg-gray-800 text-white font-medium">
+          <span>👤</span> Profil
+        </NuxtLink>
         <a
           href="/"
           target="_blank"
@@ -29,9 +35,15 @@
         </a>
       </nav>
 
-      <div
-        class="p-4 border-t border-gray-800 text-xs text-gray-500 text-center">
-        &copy; 2024 Yamaha Deta Bali
+      <div class="p-4 border-t border-gray-800">
+        <button
+          @click="handleLogout"
+          class="flex items-center gap-3 px-4 py-3 text-red-400 hover:text-red-300 hover:bg-gray-800 rounded-xl transition-colors w-full text-left">
+          <span>🚪</span> Keluar
+        </button>
+        <div class="mt-4 text-xs text-gray-500 text-center">
+          &copy; 2024 Yamaha Deta Bali
+        </div>
       </div>
     </aside>
 
@@ -41,7 +53,14 @@
       <header
         class="md:hidden bg-white h-16 border-b flex items-center justify-between px-4">
         <span class="font-bold">Admin Panel</span>
-        <NuxtLink to="/dashadmin" class="text-sm text-blue-600">Home</NuxtLink>
+        <div class="flex gap-4">
+          <NuxtLink to="/dashadmin" class="text-sm text-blue-600"
+            >Home</NuxtLink
+          >
+          <button @click="handleLogout" class="text-sm text-red-600">
+            Logout
+          </button>
+        </div>
       </header>
 
       <!-- Main Content -->
@@ -51,3 +70,13 @@
     </div>
   </div>
 </template>
+
+<script setup lang="ts">
+const { logout } = useAuth();
+
+const handleLogout = () => {
+  if (confirm("Apakah anda yakin ingin keluar?")) {
+    logout();
+  }
+};
+</script>
