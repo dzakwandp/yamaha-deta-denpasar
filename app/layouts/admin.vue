@@ -27,6 +27,12 @@
           active-class="bg-gray-800 text-white font-medium">
           <span>👤</span> Profil
         </NuxtLink>
+        <NuxtLink
+          to="/dashadmin/banners"
+          class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-gray-800 rounded-xl transition-colors"
+          active-class="bg-gray-800 text-white font-medium">
+          <span>🖼️</span> Banner
+        </NuxtLink>
         <a
           href="/"
           target="_blank"
