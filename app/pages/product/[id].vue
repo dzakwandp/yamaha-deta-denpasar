@@ -43,7 +43,7 @@
           </h1>
 
           <div class="mb-6">
-            <p class="text-sm text-gray-500 mb-1">Harga OTR Bali Mulai</p>
+            <p class="text-sm text-gray-500 mb-1">Harga OTR Denpasar Mulai</p>
             <p class="text-3xl font-bold text-red-600">
               Rp {{ product.price }}
             </p>
@@ -56,7 +56,7 @@
           <!-- Action Buttons -->
           <div class="flex flex-col sm:flex-row gap-4 mb-10">
             <a
-              :href="`https://wa.me/6283129956328?text=Halo, saya tertarik dengan ${product.name}`"
+              :href="`https://wa.me/6281943447363?text=Halo, saya tertarik dengan ${product.name}`"
               target="_blank"
               class="flex-1 px-8 py-4 bg-green-600 hover:bg-green-700 text-white text-center rounded-xl font-bold transition-all shadow-lg hover:shadow-green-900/20 flex items-center justify-center gap-2">
               <span>📱</span> Whatsapp Sales
