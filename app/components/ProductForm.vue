@@ -154,6 +154,82 @@
         </div>
       </div>
 
+      <!-- Colors Builder -->
+      <div class="border-t border-gray-100 pt-6">
+        <div class="flex justify-between items-center mb-4">
+          <label class="block text-sm font-medium text-gray-700"
+            >Varian Warna</label
+          >
+          <button
+            type="button"
+            @click="addColor"
+            class="text-xs font-bold text-red-600 hover:text-red-700">
+            + Tambah Warna
+          </button>
+        </div>
+        <div class="space-y-4">
+          <div
+            v-for="(color, index) in form.colors"
+            :key="index"
+            class="p-4 bg-gray-50 rounded-xl border border-gray-200">
+            <div class="flex justify-between items-start mb-4">
+              <h4 class="text-sm font-bold text-gray-700">
+                Warna #{{ index + 1 }}
+              </h4>
+              <button
+                type="button"
+                @click="removeColor(index)"
+                class="text-gray-400 hover:text-red-600">
+                ×
+              </button>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label class="block text-xs font-medium text-gray-500 mb-1"
+                  >Nama Warna</label
+                >
+                <div class="flex gap-2">
+                  <input
+                    v-model="color.hex"
+                    type="color"
+                    class="h-10 w-10 rounded-lg cursor-pointer border-0 p-0"
+                    title="Pilih kode warna" />
+                  <input
+                    v-model="color.name"
+                    type="text"
+                    class="flex-1 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm"
+                    placeholder="Contoh: Merah Matte" />
+                </div>
+              </div>
+
+              <div>
+                <label class="block text-xs font-medium text-gray-500 mb-1"
+                  >Foto Varian</label
+                >
+                <div class="flex items-center gap-3">
+                  <div
+                    v-if="color.image"
+                    class="w-12 h-12 bg-gray-200 rounded-lg overflow-hidden shrink-0 border border-gray-300">
+                    <img
+                      :src="color.image"
+                      class="w-full h-full object-cover" />
+                  </div>
+                  <label class="block w-full">
+                    <span class="sr-only">Choose file</span>
+                    <input
+                      type="file"
+                      accept="image/*"
+                      @change="(e) => handleColorFileUpload(e, index)"
+                      class="block w-full text-xs text-gray-500 file:mr-2 file:py-1 file:px-2 file:rounded-full file:border-0 file:text-xs file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100 cursor-pointer" />
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <!-- Submit -->
       <div class="pt-6 border-t border-gray-100 flex justify-end gap-3">
         <NuxtLink
@@ -189,6 +265,7 @@ const emit = defineEmits(["submit"]);
 const config = useRuntimeConfig();
 const { categories } = useCategory();
 const selectedFile = ref<File | null>(null);
+const selectedColorFiles = ref<{ [key: number]: File }>({}); // Map index to file
 const uploadProgress = ref(0);
 const isUploading = ref(false);
 
@@ -200,6 +277,7 @@ const form = ref({
   image: "",
   description: "",
   specs: [{ label: "Mesin", value: "" }],
+  colors: [] as { name: string; image: string; hex: string }[],
   is_featured: false,
 });
 
@@ -211,6 +289,11 @@ watch(
       form.value = {
         ...val,
         specs: val.specs || [{ label: "Mesin", value: "" }],
+        colors:
+          val.colors?.map((c: any) => ({
+            ...c,
+            hex: c.hex || "#000000", // Backwards compatibility
+          })) || [],
         is_featured: val.is_featured || false,
       };
     }
@@ -224,6 +307,18 @@ const handleFileUpload = (event: any) => {
 
   selectedFile.value = file;
   form.value.image = URL.createObjectURL(file);
+};
+
+const handleColorFileUpload = (event: any, index: number) => {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  selectedColorFiles.value[index] = file;
+  // Temporary preview
+  if (!form.value.colors[index]) {
+    form.value.colors[index] = { name: "", image: "", hex: "#000000" };
+  }
+  form.value.colors[index].image = URL.createObjectURL(file);
 };
 
 const uploadToImgBB = async (file: File) => {
@@ -254,13 +349,36 @@ const removeSpec = (index: number) => {
   form.value.specs.splice(index, 1);
 };
 
+const addColor = () => {
+  form.value.colors.push({ name: "", image: "", hex: "#000000" });
+};
+
+const removeColor = (index: number) => {
+  form.value.colors.splice(index, 1);
+  delete selectedColorFiles.value[index];
+};
+
 const save = async () => {
   try {
+    isUploading.value = true;
+
+    // Upload main image
     if (selectedFile.value) {
-      isUploading.value = true;
       const imageUrl = await uploadToImgBB(selectedFile.value);
       form.value.image = imageUrl;
     }
+
+    // Upload color images
+    for (const index in selectedColorFiles.value) {
+      const file = selectedColorFiles.value[index];
+      const imageUrl = await uploadToImgBB(file);
+      // @ts-ignore
+      if (form.value.colors[index]) {
+        // @ts-ignore
+        form.value.colors[index].image = imageUrl;
+      }
+    }
+
     emit("submit", form.value);
   } catch (e) {
     console.error(e);

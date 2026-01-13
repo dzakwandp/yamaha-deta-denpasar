@@ -1,5 +1,5 @@
 <template>
-  <div class="flex h-screen bg-gray-100 font-sans">
+  <div class="fixed inset-0 flex bg-gray-100 font-sans">
     <!-- Sidebar -->
     <aside class="w-64 bg-gray-900 text-white shrink-0 hidden md:flex flex-col">
       <div class="p-6 border-b border-gray-800">

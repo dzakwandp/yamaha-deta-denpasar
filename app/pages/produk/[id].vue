@@ -16,11 +16,68 @@
         <!-- Image Section -->
         <div>
           <div
-            class="aspect-4/3 bg-gray-50 rounded-2xl overflow-hidden flex items-center justify-center p-8 border border-gray-100">
-            <img
-              :src="product.image"
-              :alt="product.name"
-              class="max-w-full max-h-full object-contain hover:scale-105 transition-transform duration-500" />
+            class="aspect-4/3 bg-gray-50 rounded-2xl overflow-hidden flex items-center justify-center p-8 border border-gray-100 relative">
+            <Transition
+              enter-active-class="transition-opacity duration-300"
+              enter-from-class="opacity-0"
+              enter-to-class="opacity-100"
+              leave-active-class="transition-opacity duration-300"
+              leave-from-class="opacity-100"
+              leave-to-class="opacity-0"
+              mode="out-in">
+              <img
+                :key="currentImage"
+                :src="currentImage"
+                :alt="product.name"
+                class="max-w-full max-h-full object-contain hover:scale-105 transition-transform duration-500" />
+            </Transition>
+          </div>
+
+          <!-- Color Variants -->
+          <div
+            v-if="product.colors && product.colors.length > 0"
+            class="mt-6 flex justify-center">
+            <div class="inline-flex flex-col items-center">
+              <div class="flex flex-wrap gap-3 justify-center">
+                <button
+                  v-for="(color, index) in product.colors"
+                  :key="index"
+                  @click="selectedColor = color"
+                  class="group relative w-10 h-10 rounded-full border-2 transition-all flex items-center justify-center shadow-sm"
+                  :class="
+                    selectedColor === color
+                      ? 'border-red-600 ring-2 ring-red-100 scale-110'
+                      : 'border-white ring-1 ring-gray-200 hover:scale-105'
+                  "
+                  :style="{ backgroundColor: color.hex || '#ccc' }"
+                  :title="color.name">
+                  <!-- Checkmark for selected -->
+                  <span
+                    v-if="selectedColor === color"
+                    class="text-white drop-shadow-md">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="16"
+                      height="16"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="3"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      class="feather feather-check">
+                      <polyline points="20 6 9 17 4 12"></polyline>
+                    </svg>
+                  </span>
+
+                  <!-- Tooltip -->
+                  <span
+                    class="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
+                    {{ color.name }}
+                  </span>
+                </button>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -122,6 +179,25 @@ const productId = computed(() => {
 });
 
 const product = computed(() => getProductById(productId.value));
+
+const selectedColor = ref(null);
+
+// Reset selected color when product changes
+watch(product, (newVal) => {
+  if (newVal && newVal.colors && newVal.colors.length > 0) {
+    selectedColor.value = newVal.colors[0]; // Default to first color
+  } else {
+    selectedColor.value = null;
+  }
+});
+
+// Determine which image to show
+const currentImage = computed(() => {
+  if (selectedColor.value && selectedColor.value.image) {
+    return selectedColor.value.image;
+  }
+  return product.value?.image;
+});
 
 // SEO
 useHead({
