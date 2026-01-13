@@ -23,12 +23,10 @@
           <select
             v-model="form.category"
             class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 transition-all">
-            <option value="MAXi">MAXi</option>
-            <option value="Classy">Classy</option>
-            <option value="Matic">Matic</option>
-            <option value="Sport">Sport</option>
-            <option value="Off Road">Off Road</option>
-            <option value="Moped">Moped</option>
+            <option value="" disabled>Pilih Kategori</option>
+            <option v-for="cat in categories" :key="cat.id" :value="cat.name">
+              {{ cat.name }}
+            </option>
           </select>
         </div>
       </div>
@@ -189,13 +187,14 @@ const props = defineProps<{
 const emit = defineEmits(["submit"]);
 
 const config = useRuntimeConfig();
+const { categories } = useCategory();
 const selectedFile = ref<File | null>(null);
 const uploadProgress = ref(0);
 const isUploading = ref(false);
 
 const form = ref({
   name: "",
-  category: "MAXi",
+  category: "",
   price: "",
   tag: "",
   image: "",

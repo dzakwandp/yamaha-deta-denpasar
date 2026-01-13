@@ -93,8 +93,13 @@
             :key="cat.name"
             class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-all text-center group cursor-pointer border border-gray-100">
             <div
-              class="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center group-hover:bg-red-50 transition-colors text-2xl">
-              {{ cat.icon }}
+              class="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center group-hover:bg-red-50 transition-colors overflow-hidden">
+              <img
+                :src="
+                  cat.image || 'https://ui-avatars.com/api/?name=' + cat.name
+                "
+                class="w-full h-full object-cover"
+                :alt="cat.name" />
             </div>
             <h3 class="font-bold text-gray-800 group-hover:text-red-600">
               {{ cat.name }}
@@ -176,14 +181,7 @@ useHead({
   ],
 });
 
-const categories = [
-  { name: "MAXi", icon: "💎" },
-  { name: "Classy", icon: "🛵" },
-  { name: "Matic", icon: "⚡" },
-  { name: "Sport", icon: "🏎️" },
-  { name: "Off Road", icon: "⛰️" },
-  { name: "Moped", icon: "🏍️" },
-];
+const { categories } = useCategory();
 
 const { products } = useProducts();
 const { banners } = useBanners();

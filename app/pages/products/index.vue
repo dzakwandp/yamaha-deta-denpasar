@@ -77,8 +77,14 @@ useHead({
 });
 
 const { products } = useProducts();
+const { categories: categoryDocs } = useCategory();
 
-const categories = ["MAXi", "Classy", "Matic", "Sport", "Off Road", "Moped"];
+// Extract just names for the filter buttons, or use objects if needed.
+// Based on current implementation, activeCategory stores the name string.
+const categories = computed(() => {
+  if (!categoryDocs.value) return [];
+  return categoryDocs.value.map((c) => c.name);
+});
 const activeCategory = ref("All");
 
 const filteredProducts = computed(() => {
