@@ -225,7 +225,12 @@
           @click="isMenuOpen = false"
           >Home</NuxtLink
         >
-        <NuxtLink>Produk</NuxtLink>
+        <NuxtLink
+          to="/produk"
+          class="text-base font-medium text-gray-800 py-2 border-b border-gray-50"
+          @click="isMenuOpen = false"
+          >Produk</NuxtLink
+        >
         <NuxtLink
           to="/artikel"
           class="text-base font-medium text-gray-800 py-2 border-b border-gray-50"
