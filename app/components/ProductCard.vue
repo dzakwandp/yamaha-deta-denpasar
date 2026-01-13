@@ -2,25 +2,25 @@
   <div
     class="group bg-white rounded-2xl shadow-sm hover:shadow-xl transition-all duration-300 border border-gray-100 overflow-hidden flex flex-col h-full">
     <!-- Image Container with Hover Effect -->
-    <div class="relative aspect-[4/3] bg-gray-50 overflow-hidden">
+    <div class="relative aspect-4/3 bg-gray-50 overflow-hidden">
       <!-- Placeholder for image - in real app would be dynamic -->
-      <div
-        class="absolute inset-0 bg-gray-200 animate-pulse"
-        v-if="!imageLoaded"></div>
+      <div class="absolute inset-0 bg-gray-200" v-if="!imageLoaded"></div>
       <img
+        ref="imgEl"
         :src="image"
         :alt="name"
+        loading="lazy"
         class="w-full h-full object-contain p-4 group-hover:scale-110 transition-transform duration-500"
         @load="imageLoaded = true" />
       <div
-        class="absolute top-3 left-3 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md"
+        class="absolute top-3 left-3 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md z-10"
         v-if="tag">
         {{ tag }}
       </div>
     </div>
 
     <!-- Content -->
-    <div class="p-6 flex flex-col flex-grow">
+    <div class="p-6 flex flex-col grow">
       <div class="mb-4">
         <span
           class="text-xs font-bold text-gray-400 uppercase tracking-wider"
@@ -57,4 +57,11 @@ const props = defineProps<{
 }>();
 
 const imageLoaded = ref(false);
+const imgEl = ref<HTMLImageElement | null>(null);
+
+onMounted(() => {
+  if (imgEl.value?.complete) {
+    imageLoaded.value = true;
+  }
+});
 </script>

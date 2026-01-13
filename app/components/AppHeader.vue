@@ -86,7 +86,7 @@
         >
         <NuxtLink
           to="/contact"
-          class="text-base font-medium text-red-600 py-2 font-bold"
+          class="text-base font-medium text-red-600 py-2"
           @click="isMenuOpen = false"
           >Hubungi Kami</NuxtLink
         >

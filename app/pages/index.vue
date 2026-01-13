@@ -2,15 +2,31 @@
   <div>
     <!-- Hero Section -->
     <section
-      class="relative bg-gray-900 text-white overflow-hidden h-[600px] flex items-center">
-      <div class="absolute inset-0 z-0 opacity-40">
-        <!-- Abstract Background -->
+      class="relative bg-gray-900 text-white overflow-hidden h-[800px] flex items-center group">
+      <!-- Background Carousel -->
+      <div class="absolute inset-0 z-0">
         <div
-          class="absolute inset-0 bg-gradient-to-r from-gray-900 via-gray-900/80 to-transparent z-10"></div>
-        <img
-          src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?q=80&w=2070&auto=format&fit=crop"
-          alt="Yamaha Background"
-          class="w-full h-full object-cover" />
+          v-if="banners.length > 0"
+          v-for="(banner, index) in banners"
+          :key="banner.id"
+          class="absolute inset-0 transition-opacity duration-1000 ease-in-out"
+          :class="index === currentSlide ? 'opacity-100' : 'opacity-0'">
+          <img
+            :src="banner.image"
+            alt="Hero Background"
+            class="w-full h-full object-cover" />
+        </div>
+        <!-- Fallback Static Image -->
+        <div v-else class="absolute inset-0">
+          <img
+            src="https://images.unsplash.com/photo-1558981403-c5f9899a28bc?q=80&w=2070&auto=format&fit=crop"
+            alt="Yamaha Background"
+            class="w-full h-full object-cover" />
+        </div>
+
+        <!-- Gradient Overlay -->
+        <div
+          class="absolute inset-0 bg-linear-to-r from-gray-900 via-gray-900/80 to-transparent z-10"></div>
       </div>
 
       <div
@@ -24,7 +40,7 @@
             class="text-5xl md:text-7xl font-extrabold leading-tight tracking-tight">
             YAMAHA <br />
             <span
-              class="text-transparent bg-clip-text bg-gradient-to-r from-red-500 to-orange-500"
+              class="text-transparent bg-clip-text bg-linear-to-r from-red-500 to-orange-500"
               >SEMAKIN DI DEPAN</span
             >
           </h1>
@@ -45,6 +61,21 @@
             </NuxtLink>
           </div>
         </div>
+      </div>
+      <!-- Carousel Indicators (Optional) -->
+      <div
+        v-if="banners.length > 1"
+        class="absolute bottom-8 left-1/2 -translate-x-1/2 z-30 flex gap-2">
+        <button
+          v-for="(_, index) in banners"
+          :key="index"
+          @click="setSlide(index)"
+          class="w-2 h-2 rounded-full transition-all"
+          :class="
+            index === currentSlide
+              ? 'bg-red-600 w-8'
+              : 'bg-white/50 hover:bg-white'
+          "></button>
       </div>
     </section>
 
@@ -135,12 +166,12 @@
 <script setup lang="ts">
 // SEO Meta
 useHead({
-  title: "Yamaha Deta Bali - Official Dealer",
+  title: "Yamaha Deta Denpasar - Official Dealer",
   meta: [
     {
       name: "description",
       content:
-        "Dealer Resmi Yamaha Bali Terbaik. Jual NMAX, Aerox, Fazzio, R15. Cash & Kredit Bunga Murah.",
+        "Dealer Resmi Yamaha Denpasar Terbaik. Jual NMAX, Aerox, Fazzio, R15. Cash & Kredit Bunga Murah.",
     },
   ],
 });
@@ -155,7 +186,52 @@ const categories = [
 ];
 
 const { products } = useProducts();
+const { banners } = useBanners();
 const featuredProducts = products;
+
+// Carousel Logic
+const currentSlide = ref(0);
+const carouselInterval = ref<NodeJS.Timeout | null>(null);
+
+const nextSlide = () => {
+  if (banners.value.length === 0) return;
+  currentSlide.value = (currentSlide.value + 1) % banners.value.length;
+};
+
+const prevSlide = () => {
+  if (banners.value.length === 0) return;
+  currentSlide.value =
+    (currentSlide.value - 1 + banners.value.length) % banners.value.length;
+};
+
+const setSlide = (index: number) => {
+  currentSlide.value = index;
+  resetInterval();
+};
+
+const startInterval = () => {
+  carouselInterval.value = setInterval(nextSlide, 5000);
+};
+
+const stopInterval = () => {
+  if (carouselInterval.value) {
+    clearInterval(carouselInterval.value);
+    carouselInterval.value = null;
+  }
+};
+
+const resetInterval = () => {
+  stopInterval();
+  startInterval();
+};
+
+onMounted(() => {
+  startInterval();
+});
+
+onUnmounted(() => {
+  stopInterval();
+});
 </script>
 
 <style scoped>

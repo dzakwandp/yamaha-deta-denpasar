@@ -16,7 +16,7 @@
         <!-- Image Section -->
         <div>
           <div
-            class="aspect-[4/3] bg-gray-50 rounded-2xl overflow-hidden flex items-center justify-center p-8 border border-gray-100">
+            class="aspect-4/3 bg-gray-50 rounded-2xl overflow-hidden flex items-center justify-center p-8 border border-gray-100">
             <img
               :src="product.image"
               :alt="product.name"
