@@ -98,27 +98,27 @@
 
         <!-- Image (1:1 Aspect Ratio) -->
         <div
-          class="w-full md:w-1/2 flex items-center justify-center order-first md:order-last">
-          <div
-            class="w-full max-w-md mx-auto md:max-w-none md:mx-0 aspect-square rounded-2xl overflow-hidden shadow-lg relative group">
-            <img
-              :src="
-                profile.photo ||
-                'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=2069&auto=format&fit=crop'
-              "
-              class="w-1/2 h-1/2 object-cover"
-              :alt="profile.nama || 'Yamaha Showroom'" />
+          class="md:w-max w-2/3 max-w-md mx-auto md:max-w-none md:mx-0 aspect-square rounded-2xl overflow-hidden shadow-lg relative group">
+          <img
+            :src="
+              profile.photo ||
+              'https://images.unsplash.com/photo-1544620347-c4fd4a3d5957?q=80&w=2069&auto=format&fit=crop'
+            "
+            class="w-full h-full object-cover"
+            :alt="profile.nama || 'Yamaha Deta Denpasar'" />
+        </div>
 
-            <!-- Map Link Overlay -->
-            <a
-              :href="`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
-                profile.alamat
-              )}`"
-              target="_blank"
-              class="absolute bottom-6 right-6 bg-white/90 backdrop-blur-sm text-gray-900 px-6 py-3 rounded-full font-bold shadow-lg hover:bg-red-600 hover:text-white transition-all flex items-center gap-2 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 duration-300">
-              <span>🗺️</span> Buka Maps
-            </a>
-          </div>
+        <!-- maps view -->
+        <div
+          class="md:w-1/2 w-[80%] mx-auto rounded-md overflow-hidden shadow-lg">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3944.5827995172795!2d115.23491207576137!3d-8.635988387805464!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd23f9d75d4edbb%3A0xd0fe0999d925c981!2sJl.%20Gatot%20Subroto%20Tim.%20No.301x%2C%20Kesiman%20Petilan%2C%20Kec.%20Denpasar%20Tim.%2C%20Kota%20Denpasar%2C%20Bali%2080237!5e0!3m2!1sid!2sid!4v1768279741802!5m2!1sid!2sid"
+            width="600"
+            height="450"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"></iframe>
         </div>
       </div>
 

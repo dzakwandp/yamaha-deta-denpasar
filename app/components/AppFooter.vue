@@ -16,7 +16,10 @@
             <!-- Social Icons placeholders -->
             <a
               v-if="profile?.instagram"
-              :href="profile.instagram"
+              :href="`https://instagram.com/${profile.instagram.replace(
+                '@',
+                ''
+              )}`"
               target="_blank"
               class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-red-600 transition-colors">
               <span class="sr-only">Instagram</span>
@@ -116,7 +119,10 @@
             <li class="flex items-center gap-3" v-if="profile.instagram">
               <span class="text-red-500">📷</span>
               <a
-                :href="profile.instagram"
+                :href="`https://instagram.com/${profile.instagram.replace(
+                  '@',
+                  ''
+                )}`"
                 target="_blank"
                 class="text-gray-400 hover:text-white"
                 >Instagram</a
