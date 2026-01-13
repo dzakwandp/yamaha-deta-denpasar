@@ -25,7 +25,7 @@ const handleCreate = async (data: any) => {
       ...data,
     });
     alert("Produk berhasil dibuat!");
-    router.push("/dashadmin/products");
+    router.push("/dashadmin/produk");
   } catch (e) {
     console.error(e);
     alert("Gagal membuat produk");

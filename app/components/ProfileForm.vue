@@ -118,7 +118,7 @@
       <!-- Actions -->
       <div class="pt-6 border-t border-gray-100 flex justify-end gap-3">
         <NuxtLink
-          to="/dashadmin/profiles"
+          to="/dashadmin/profil"
           class="px-6 py-3 bg-gray-100 text-gray-700 rounded-xl font-bold hover:bg-gray-200 transition-colors">
           Batal
         </NuxtLink>

@@ -53,7 +53,7 @@
           <ul class="space-y-3">
             <li>
               <NuxtLink
-                to="/products"
+                to="/produk"
                 class="text-gray-400 hover:text-red-500 transition-colors"
                 >Daftar Produk</NuxtLink
               >

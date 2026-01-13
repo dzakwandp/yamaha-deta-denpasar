@@ -35,7 +35,7 @@ const handleUpdate = async (data: any) => {
     // Firestore expects string ID for doc ref
     await updateDoc(doc(db, "products", product.value.id.toString()), data);
     alert("Produk berhasil diperbarui!");
-    router.push("/dashadmin/products");
+    router.push("/dashadmin/produk");
   } catch (e) {
     console.error(e);
     alert("Gagal memperbarui produk");

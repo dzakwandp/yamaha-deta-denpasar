@@ -16,19 +16,25 @@
           <span>📊</span> Dashboard
         </NuxtLink>
         <NuxtLink
-          to="/dashadmin/categories"
+          to="/dashadmin/kategori"
           class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-gray-800 rounded-xl transition-colors"
           active-class="bg-gray-800 text-white font-medium">
           <span>🏷️</span> Kategori
         </NuxtLink>
         <NuxtLink
-          to="/dashadmin/products"
+          to="/dashadmin/artikel"
+          class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-gray-800 rounded-xl transition-colors"
+          active-class="bg-gray-800 text-white font-medium">
+          <span>📰</span> Artikel
+        </NuxtLink>
+        <NuxtLink
+          to="/dashadmin/produk"
           class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-gray-800 rounded-xl transition-colors"
           active-class="bg-gray-800 text-white font-medium">
           <span>📦</span> Produk
         </NuxtLink>
         <NuxtLink
-          to="/dashadmin/profiles"
+          to="/dashadmin/profil"
           class="flex items-center gap-3 px-4 py-3 text-gray-400 hover:text-white hover:bg-gray-800 rounded-xl transition-colors"
           active-class="bg-gray-800 text-white font-medium">
           <span>👤</span> Profil

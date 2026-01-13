@@ -32,7 +32,7 @@ const handleUpdate = async ({ data, file }: { data: any; file: File }) => {
   try {
     await updateCategory(categoryId, data, file);
     alert("Kategori berhasil diupdate!");
-    router.push("/dashadmin/categories");
+    router.push("/dashadmin/kategori");
   } catch (e) {
     console.error(e);
     alert("Gagal mengupdate kategori");

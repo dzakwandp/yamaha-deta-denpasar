@@ -1,7 +1,7 @@
 <template>
   <div>
-    <h1 class="text-3xl font-bold text-gray-800 mb-8">Tambah Profil Baru</h1>
-    <ProfileForm @submit="handleCreate" :loading="loading" />
+    <h1 class="text-3xl font-bold text-gray-800 mb-8">Tulis Artikel Baru</h1>
+    <ArticleForm @submit="handleCreate" :loading="loading" />
   </div>
 </template>
 
@@ -10,19 +10,19 @@ definePageMeta({
   layout: "admin",
 });
 
-const { createProfile } = useProfile();
+const { createArticle } = useArticle();
 const router = useRouter();
 const loading = ref(false);
 
 const handleCreate = async ({ data, file }: { data: any; file: File }) => {
   loading.value = true;
   try {
-    await createProfile(data, file);
-    alert("Profil berhasil dibuat!");
-    router.push("/dashadmin/profiles");
+    await createArticle(data, file);
+    alert("Artikel berhasil diterbitkan!");
+    router.push("/dashadmin/artikel");
   } catch (e) {
     console.error(e);
-    alert("Gagal membuat profil");
+    alert("Gagal membuat artikel");
   } finally {
     loading.value = false;
   }

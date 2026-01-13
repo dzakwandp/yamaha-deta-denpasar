@@ -19,7 +19,7 @@ const handleCreate = async ({ data, file }: { data: any; file: File }) => {
   try {
     await createCategory(data, file);
     alert("Kategori berhasil dibuat!");
-    router.push("/dashadmin/categories");
+    router.push("/dashadmin/kategori");
   } catch (e) {
     console.error(e);
     alert("Gagal membuat kategori");

@@ -6,7 +6,7 @@
         <p class="text-gray-500 mt-2">Kelola kategori produk motor Yamaha</p>
       </div>
       <NuxtLink
-        to="/dashadmin/categories/create"
+        to="/dashadmin/kategori/create"
         class="bg-red-600 hover:bg-red-700 text-white px-6 py-3 rounded-xl font-bold transition-all shadow-lg hover:shadow-red-900/30 flex items-center gap-2">
         <span>+</span> Tambah Kategori
       </NuxtLink>
@@ -56,7 +56,7 @@
               <td class="px-6 py-4 text-right">
                 <div class="flex items-center justify-end gap-2">
                   <NuxtLink
-                    :to="`/dashadmin/categories/${category.id}`"
+                    :to="`/dashadmin/kategori/${category.id}`"
                     class="p-2 text-blue-600 hover:bg-blue-50 rounded-lg transition-colors"
                     title="Edit">
                     ✏️

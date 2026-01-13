@@ -15,9 +15,14 @@
           >Home</NuxtLink
         >
         <NuxtLink
-          to="/products"
+          to="/produk"
           class="text-sm font-medium text-gray-700 hover:text-red-600 transition-colors uppercase tracking-wide"
           >Produk</NuxtLink
+        >
+        <NuxtLink
+          to="/artikel"
+          class="text-sm font-medium text-gray-700 hover:text-red-600 transition-colors uppercase tracking-wide"
+          >Artikel</NuxtLink
         >
         <NuxtLink
           to="/pricelist"
@@ -30,7 +35,7 @@
           >Promo</NuxtLink
         >
         <NuxtLink
-          to="/contact"
+          to="/kontak"
           class="px-5 py-2.5 rounded-full bg-red-600 text-white text-sm font-bold hover:bg-red-700 transition-all shadow-md hover:shadow-lg transform hover:-translate-y-0.5">
           Hubungi Kami
         </NuxtLink>
@@ -66,11 +71,12 @@
           @click="isMenuOpen = false"
           >Home</NuxtLink
         >
+        <NuxtLink>Produk</NuxtLink>
         <NuxtLink
-          to="/products"
+          to="/artikel"
           class="text-base font-medium text-gray-800 py-2 border-b border-gray-50"
           @click="isMenuOpen = false"
-          >Produk</NuxtLink
+          >Artikel</NuxtLink
         >
         <NuxtLink
           to="/pricelist"
@@ -85,7 +91,7 @@
           >Promo</NuxtLink
         >
         <NuxtLink
-          to="/contact"
+          to="/kontak"
           class="text-base font-medium text-red-600 py-2"
           @click="isMenuOpen = false"
           >Hubungi Kami</NuxtLink

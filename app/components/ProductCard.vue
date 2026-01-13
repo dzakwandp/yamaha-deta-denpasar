@@ -37,7 +37,7 @@
         <p class="text-lg font-bold text-red-600">Rp {{ price }}</p>
 
         <NuxtLink
-          :to="`/product/${id}`"
+          :to="`/produk/${id}`"
           class="mt-4 block w-full py-3 bg-gray-900 text-white text-center rounded-xl font-medium hover:bg-red-600 transition-colors shadow-lg shadow-gray-200">
           Lihat Detail
         </NuxtLink>

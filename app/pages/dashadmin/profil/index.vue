@@ -6,7 +6,7 @@
         <p class="text-gray-500 mt-1">Kelola data profil tim</p>
       </div>
       <NuxtLink
-        to="/dashadmin/profiles/create"
+        to="/dashadmin/profil/create"
         class="flex items-center gap-2 px-6 py-3 bg-red-600 text-white rounded-xl font-bold hover:bg-red-700 transition-colors shadow-lg shadow-red-200">
         <span>+</span> Tambah Profil
       </NuxtLink>
@@ -75,7 +75,7 @@
             <td class="px-6 py-4 text-right">
               <div class="flex items-center justify-end gap-2">
                 <NuxtLink
-                  :to="`/dashadmin/profiles/${profile.id}`"
+                  :to="`/dashadmin/profil/${profile.id}`"
                   class="p-2 text-gray-400 hover:text-blue-600 hover:bg-blue-50 rounded-lg transition-colors">
                   ✏️
                 </NuxtLink>

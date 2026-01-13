@@ -3,7 +3,7 @@
     <div class="flex justify-between items-center mb-8">
       <h1 class="text-3xl font-bold text-gray-800">Daftar Produk</h1>
       <NuxtLink
-        to="/dashadmin/products/create"
+        to="/dashadmin/produk/create"
         class="px-6 py-3 bg-red-600 text-white rounded-lg font-bold hover:bg-red-700 transition-colors shadow-lg shadow-red-900/20">
         + Tambah Produk
       </NuxtLink>
@@ -55,7 +55,7 @@
               <div
                 class="flex justify-end gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                 <NuxtLink
-                  :to="`/dashadmin/products/${product.id}`"
+                  :to="`/dashadmin/produk/${product.id}`"
                   class="px-3 py-1.5 bg-blue-50 text-blue-600 rounded-lg text-sm font-bold hover:bg-blue-100">
                   Edit
                 </NuxtLink>

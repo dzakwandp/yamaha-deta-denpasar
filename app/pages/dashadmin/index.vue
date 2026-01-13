@@ -15,12 +15,12 @@
       <h2 class="text-xl font-bold mb-4">Aksi Cepat</h2>
       <div class="flex justify-center gap-4">
         <NuxtLink
-          to="/dashadmin/products/create"
+          to="/dashadmin/produk/create"
           class="px-6 py-3 bg-red-600 text-white rounded-lg font-bold hover:bg-red-700 transition-colors">
           + Tambah Produk Baru
         </NuxtLink>
         <NuxtLink
-          to="/dashadmin/products"
+          to="/dashadmin/produk"
           class="px-6 py-3 bg-gray-100 text-gray-700 rounded-lg font-bold hover:bg-gray-200 transition-colors">
           Kelola Produk
         </NuxtLink>

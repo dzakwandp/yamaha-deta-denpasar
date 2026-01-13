@@ -31,7 +31,7 @@ onMounted(async () => {
   } catch (e) {
     console.error(e);
     alert("Produk tidak ditemukan");
-    router.push("/dashadmin/profiles");
+    router.push("/dashadmin/profil");
   }
 });
 
@@ -40,7 +40,7 @@ const handleUpdate = async ({ data, file }: { data: any; file: File }) => {
   try {
     await updateProfile(id, data, file);
     alert("Profil berhasil diperbarui!");
-    router.push("/dashadmin/profiles");
+    router.push("/dashadmin/profil");
   } catch (e) {
     console.error(e);
     alert("Gagal memperbarui profil");

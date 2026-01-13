@@ -5,7 +5,7 @@
       <div class="container mx-auto px-4 py-4 text-sm text-gray-500">
         <NuxtLink to="/" class="hover:text-red-600">Home</NuxtLink>
         <span class="mx-2">/</span>
-        <NuxtLink to="/products" class="hover:text-red-600">Produk</NuxtLink>
+        <NuxtLink to="/produk" class="hover:text-red-600">Produk</NuxtLink>
         <span class="mx-2">/</span>
         <span class="text-gray-900 font-medium">{{ product.name }}</span>
       </div>

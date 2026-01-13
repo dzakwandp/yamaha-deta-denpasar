@@ -50,7 +50,7 @@
           </p>
           <div class="flex gap-4 pt-4">
             <NuxtLink
-              to="/products"
+              to="/produk"
               class="px-8 py-4 bg-red-600 hover:bg-red-700 text-white rounded-xl font-bold transition-all transform hover:-translate-y-1 shadow-lg shadow-red-900/50">
               Lihat Produk
             </NuxtLink>
@@ -120,7 +120,7 @@
             </p>
           </div>
           <NuxtLink
-            to="/products"
+            to="/produk"
             class="hidden md:flex items-center text-red-600 font-bold hover:gap-2 transition-all">
             Lihat Semua <span class="ml-1">→</span>
           </NuxtLink>
@@ -140,7 +140,7 @@
 
         <div class="mt-12 text-center md:hidden">
           <NuxtLink
-            to="/products"
+            to="/produk"
             class="inline-block px-6 py-3 border border-gray-200 rounded-xl font-bold text-gray-700 hover:bg-gray-50">
             Lihat Semua Produk
           </NuxtLink>
@@ -159,7 +159,7 @@
           bunga ringan dan proses cepat.
         </p>
         <NuxtLink
-          to="/contact"
+          to="/kontak"
           class="inline-flex items-center gap-2 px-8 py-4 bg-green-600 hover:bg-green-700 text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-green-900/30">
           <span>💬</span> Chat WhatsApp Sekarang
         </NuxtLink>
