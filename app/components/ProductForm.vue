@@ -29,29 +29,55 @@
             </option>
           </select>
         </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >Jenis Produk</label
+          >
+          <select
+            v-model="form.jenis_id"
+            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 transition-all">
+            <option value="" disabled>Pilih Jenis</option>
+            <option v-for="j in jenisList" :key="j.id" :value="j.id">
+              {{ j.name }}
+            </option>
+          </select>
+        </div>
       </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div>
           <label class="block text-sm font-medium text-gray-700 mb-2"
-            >Harga OTR (Rp)</label
+            >Index / Urutan (Angka)</label
           >
           <input
-            v-model="form.price"
-            type="text"
-            required
+            v-model="form.sort_index"
+            type="number"
             class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 transition-all"
-            placeholder="Contoh: 32.000.000" />
+            placeholder="Contoh: 1, 2, 3" />
         </div>
-        <div>
-          <label class="block text-sm font-medium text-gray-700 mb-2"
-            >Tag (Opsional)</label
-          >
-          <input
-            v-model="form.tag"
-            type="text"
-            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 transition-all"
-            placeholder="Contoh: NEW, PROMO" />
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2"
+              >Harga OTR (Rp)</label
+            >
+            <input
+              v-model="form.price"
+              type="text"
+              required
+              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 transition-all"
+              placeholder="Contoh: 32.000.000" />
+          </div>
+          <div>
+            <label class="block text-sm font-medium text-gray-700 mb-2"
+              >Tag (Opsional)</label
+            >
+            <input
+              v-model="form.tag"
+              type="text"
+              class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 transition-all"
+              placeholder="Contoh: NEW, PROMO" />
+          </div>
         </div>
       </div>
 
@@ -263,7 +289,8 @@ const props = defineProps<{
 const emit = defineEmits(["submit"]);
 
 const config = useRuntimeConfig();
-const { categories } = useCategory();
+const { categories } = useCategory(); // Keeping for legacy/compatibility if needed
+const { jenisList } = useJenis();
 const selectedFile = ref<File | null>(null);
 const selectedColorFiles = ref<{ [key: number]: File }>({}); // Map index to file
 const uploadProgress = ref(0);
@@ -272,6 +299,8 @@ const isUploading = ref(false);
 const form = ref({
   name: "",
   category: "",
+  jenis_id: "",
+  sort_index: 0,
   price: "",
   tag: "",
   image: "",
@@ -288,6 +317,8 @@ watch(
     if (val) {
       form.value = {
         ...val,
+        jenis_id: val.jenis_id || "",
+        sort_index: val.sort_index || 0,
         specs: val.specs || [{ label: "Mesin", value: "" }],
         colors:
           val.colors?.map((c: any) => ({
@@ -371,11 +402,13 @@ const save = async () => {
     // Upload color images
     for (const index in selectedColorFiles.value) {
       const file = selectedColorFiles.value[index];
-      const imageUrl = await uploadToImgBB(file);
-      // @ts-ignore
-      if (form.value.colors[index]) {
+      if (file) {
+        const imageUrl = await uploadToImgBB(file);
         // @ts-ignore
-        form.value.colors[index].image = imageUrl;
+        if (form.value.colors[index]) {
+          // @ts-ignore
+          form.value.colors[index].image = imageUrl;
+        }
       }
     }
 
