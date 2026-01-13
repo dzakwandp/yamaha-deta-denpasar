@@ -60,7 +60,7 @@
           <span>🚪</span> Keluar
         </button>
         <div class="mt-4 text-xs text-gray-500 text-center">
-          &copy; 2024 Yamaha Deta Bali
+          &copy; 2024 Yamaha Deta Denpasar
         </div>
       </div>
     </aside>

@@ -25,12 +25,12 @@ export default defineNuxtConfig({
   },
   app: {
     head: {
-      title: "Yamaha Deta Bali | Dealer Resmi Motor Yamaha",
+      title: "Yamaha Deta Denpasar | Dealer Resmi Motor Yamaha",
       meta: [
         {
           name: "description",
           content:
-            "Melayani pembelian motor YAMAHA CASH maupun CREDIT dengan harga dan pelayanan TERBAIK di Bali.",
+            "Melayani pembelian motor YAMAHA CASH maupun CREDIT dengan harga dan pelayanan TERBAIK di Denpasar.",
         },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
       ],
