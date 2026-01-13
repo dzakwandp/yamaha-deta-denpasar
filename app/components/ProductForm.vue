@@ -57,6 +57,18 @@
         </div>
       </div>
 
+      <!-- Featured Checkbox -->
+      <div class="flex items-center gap-2">
+        <input
+          v-model="form.is_featured"
+          type="checkbox"
+          id="featured"
+          class="w-5 h-5 text-red-600 border-gray-300 rounded focus:ring-red-500" />
+        <label for="featured" class="text-sm font-medium text-gray-700">
+          Produk Unggulan? (Tampilkan di Home Page)
+        </label>
+      </div>
+
       <!-- Image Upload -->
       <div>
         <label class="block text-sm font-medium text-gray-700 mb-2"
@@ -189,6 +201,7 @@ const form = ref({
   image: "",
   description: "",
   specs: [{ label: "Mesin", value: "" }],
+  is_featured: false,
 });
 
 // Initialize form
@@ -199,6 +212,7 @@ watch(
       form.value = {
         ...val,
         specs: val.specs || [{ label: "Mesin", value: "" }],
+        is_featured: val.is_featured || false,
       };
     }
   },

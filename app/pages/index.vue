@@ -187,7 +187,13 @@ const categories = [
 
 const { products } = useProducts();
 const { banners } = useBanners();
-const featuredProducts = products;
+const featuredProducts = computed(() => {
+  if (!products.value) return [];
+  // Filter only products with is_featured === true
+  return products.value.filter(
+    (p: any) => p.is_featured === true || p.is_featured === 1
+  );
+});
 
 // Carousel Logic
 const currentSlide = ref(0);
