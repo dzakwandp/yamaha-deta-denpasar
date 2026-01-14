@@ -4,7 +4,7 @@
     <ArticleForm
       v-if="article"
       :initial-data="article"
-      @submit="handleUpdate"
+      @submit="handleSubmit"
       :loading="loading" />
     <div v-else class="text-center py-12 text-gray-500">Memuat artikel...</div>
   </div>
@@ -14,6 +14,8 @@
 definePageMeta({
   layout: "admin",
 });
+
+import Swal from "sweetalert2";
 
 const route = useRoute();
 const router = useRouter();
@@ -32,11 +34,11 @@ const handleSubmit = async ({
   file,
 }: {
   data: any;
-  file: File | null;
+  file: File | null | undefined;
 }) => {
   loading.value = true;
   try {
-    await updateArticle(articleId, data, file);
+    await updateArticle(articleId, data, file || undefined);
     await Swal.fire({
       title: "Berhasil!",
       text: "Artikel berhasil diupdate!",

@@ -48,10 +48,19 @@
       </div>
     </div>
 
+    <!-- Loading / Not Found -->
     <div v-else class="min-h-screen flex items-center justify-center">
-      <div class="animate-pulse flex flex-col items-center">
+      <div v-if="loading" class="animate-pulse flex flex-col items-center">
         <div class="h-4 bg-gray-200 rounded w-48 mb-4"></div>
         <p class="text-gray-400">Memuat artikel...</p>
+      </div>
+      <div v-else class="text-center">
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">
+          Artikel Tidak Ditemukan
+        </h2>
+        <NuxtLink to="/artikel" class="text-red-600 hover:underline"
+          >Kembali ke Daftar</NuxtLink
+        >
       </div>
     </div>
   </div>
@@ -63,17 +72,29 @@ import { Timestamp } from "firebase/firestore";
 const route = useRoute();
 const { getArticle } = useArticle();
 const article = ref<any>(null);
+const loading = ref(true);
 
-const articleId = route.params.id as string;
+const articleSlug = route.params.slug as string;
 
 // Fetch data
 onMounted(async () => {
-  article.value = await getArticle(articleId);
+  try {
+    // Extract ID from slug param (format: id-slug)
+    const id = articleSlug.split("-")[0];
+    if (!id) throw new Error("Invalid article URL");
 
-  if (article.value) {
-    useHead({
-      title: `${article.value.judul} | Yamaha Deta Denpasar`,
-    });
+    article.value = await getArticle(id);
+    console.log("Fetched article:", article.value); // Debug log
+
+    if (article.value) {
+      useHead({
+        title: `${article.value.judul} | Yamaha Deta Denpasar`,
+      });
+    }
+  } catch (e) {
+    console.error(e);
+  } finally {
+    loading.value = false;
   }
 });
 

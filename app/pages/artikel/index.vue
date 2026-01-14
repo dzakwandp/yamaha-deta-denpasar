@@ -15,7 +15,7 @@
         <NuxtLink
           v-for="article in articles"
           :key="article.id"
-          :to="`/artikel/${article.id}`"
+          :to="`/artikel/${article.id}-${article.slug}`"
           class="group bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all border border-gray-100 flex flex-col">
           <div class="aspect-video overflow-hidden">
             <img

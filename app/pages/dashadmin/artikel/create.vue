@@ -10,6 +10,8 @@ definePageMeta({
   layout: "admin",
 });
 
+import Swal from "sweetalert2";
+
 const { createArticle } = useArticle();
 const router = useRouter();
 const loading = ref(false);

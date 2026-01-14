@@ -4,7 +4,7 @@
     <CategoryForm
       v-if="category"
       :initial-data="category"
-      @submit="handleUpdate"
+      @submit="handleSubmit"
       :loading="loading" />
     <div v-else class="text-center py-12 text-gray-500">Memuat data...</div>
   </div>
@@ -14,6 +14,8 @@
 definePageMeta({
   layout: "admin",
 });
+
+import Swal from "sweetalert2";
 
 const route = useRoute();
 const router = useRouter();

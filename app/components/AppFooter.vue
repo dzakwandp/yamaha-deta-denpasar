@@ -149,7 +149,8 @@
         class="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
         <p>
           &copy; {{ new Date().getFullYear() }} Yamaha Deta Denpasar |
-          <a href="https://dzakwandp.id">dzakwandp.id.</a> All rights reserved.
+          <a href="https://dzakwandp.id" target="_blank">dzakwandp.id.</a> All
+          rights reserved.
         </p>
       </div>
     </div>

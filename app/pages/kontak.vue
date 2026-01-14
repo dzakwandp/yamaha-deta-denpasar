@@ -25,6 +25,19 @@
           </div>
 
           <div class="space-y-6">
+            <!-- Name -->
+            <div class="flex items-start gap-4">
+              <div
+                class="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xl shrink-0">
+                👧🏻
+              </div>
+              <div>
+                <h3 class="font-bold text-lg text-gray-900 mb-1">
+                  {{ profile.nama }}
+                </h3>
+              </div>
+            </div>
+
             <!-- Address -->
             <div class="flex items-start gap-4">
               <div

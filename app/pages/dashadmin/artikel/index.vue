@@ -104,10 +104,11 @@ definePageMeta({
   layout: "admin",
 });
 
-const { getArticles, deleteArticle } = useArticle();
+const { getArticles, deleteArticle, migrateSlugs } = useArticle();
 const articles = ref<any[]>([]);
 
 onMounted(async () => {
+  await migrateSlugs();
   articles.value = await getArticles();
 });
 
