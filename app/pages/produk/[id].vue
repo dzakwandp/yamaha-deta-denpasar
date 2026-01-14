@@ -16,21 +16,26 @@
         <!-- Image Section -->
         <div class="sticky top-24 self-start">
           <div
-            class="aspect-4/3 bg-gray-50 rounded-2xl overflow-hidden flex items-center justify-center p-8 border border-gray-100 relative">
-            <Transition
-              enter-active-class="transition-opacity duration-300"
-              enter-from-class="opacity-0"
-              enter-to-class="opacity-100"
-              leave-active-class="transition-opacity duration-300"
-              leave-from-class="opacity-100"
-              leave-to-class="opacity-0"
-              mode="out-in">
+            class="aspect-4/3 bg-gray-50 rounded-2xl overflow-hidden p-8 border border-gray-100 relative group">
+            <!-- Default Image (Fallback) -->
+            <img
+              :src="product.image"
+              :alt="product.name"
+              class="absolute inset-0 w-full h-full object-contain p-8 transition-all duration-500 group-hover:scale-105"
+              :class="!selectedColor ? 'opacity-100 z-10' : 'opacity-0 z-0'" />
+
+            <!-- Color Variant Images -->
+            <template v-if="product.colors && product.colors.length > 0">
               <img
-                :key="currentImage"
-                :src="currentImage"
-                :alt="product.name"
-                class="max-w-full max-h-full object-contain hover:scale-105 transition-transform duration-500" />
-            </Transition>
+                v-for="(color, index) in product.colors"
+                :key="index"
+                :src="color.image"
+                :alt="`${product.name} - ${color.name}`"
+                class="absolute inset-0 w-full h-full object-contain p-8 transition-all duration-500 group-hover:scale-105"
+                :class="
+                  selectedColor === color ? 'opacity-100 z-10' : 'opacity-0 z-0'
+                " />
+            </template>
           </div>
 
           <!-- Color Variants -->
