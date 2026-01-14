@@ -38,53 +38,35 @@
         </button>
       </div>
 
-      <!-- Product Groups by Jenis (Show only when All) -->
-      <div v-if="activeCategory === 'All'" class="space-y-16">
-        <div v-for="group in groupedProducts" :key="group.jenisId">
-          <!-- Group Header -->
-          <div class="flex items-center gap-4 mb-8">
-            <h2 class="text-2xl font-bold text-gray-900">
-              {{ group.jenisName }}
-            </h2>
-            <div class="h-1 flex-1 bg-gray-100 rounded-full"></div>
-          </div>
+      <!-- Product Groups by Jenis -->
+      <div class="space-y-16">
+        <template v-for="group in groupedProducts" :key="group.jenisId">
+          <div v-if="group.products.length > 0">
+            <!-- Group Header -->
+            <div class="flex items-center gap-4 mb-8">
+              <h2 class="text-2xl font-bold text-gray-900">
+                {{ group.jenisName }}
+              </h2>
+              <div class="h-1 flex-1 bg-gray-100 rounded-full"></div>
+            </div>
 
-          <!-- Product Grid -->
-          <div
-            v-if="group.products.length > 0"
-            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-            <div v-for="product in group.products" :key="product.id">
-              <ProductCard
-                :id="product.id"
-                :name="product.name"
-                :category="product.category"
-                :price="product.price"
-                :image="product.image"
-                :tag="product.tag" />
+            <!-- Product Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              <div v-for="product in group.products" :key="product.id">
+                <ProductCard
+                  :id="product.id"
+                  :name="product.name"
+                  :category="product.category"
+                  :price="product.price"
+                  :image="product.image"
+                  :tag="product.tag" />
+              </div>
             </div>
           </div>
-          <div v-else class="text-gray-400 italic">
-            Belum ada produk untuk kategori ini.
-          </div>
-        </div>
+        </template>
       </div>
 
-      <!-- Filtered Grid (Show when specific category selected) -->
-      <div
-        v-if="activeCategory !== 'All' && filteredProducts.length > 0"
-        class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-        <div v-for="product in filteredProducts" :key="product.id">
-          <ProductCard
-            :id="product.id"
-            :name="product.name"
-            :category="product.category"
-            :price="product.price"
-            :image="product.image"
-            :tag="product.tag" />
-        </div>
-      </div>
-
-      <!-- Ungrouped / Legacy Products (Optional, if any don't have a jenis) -->
+      <!-- Ungrouped / Legacy Products -->
       <div
         v-if="ungroupedProducts.length > 0"
         class="mt-16 pt-16 border-t border-gray-100">
@@ -107,11 +89,15 @@
 
       <!-- Empty State -->
       <div
-        v-if="groupedProducts.length === 0 && ungroupedProducts.length === 0"
+        v-if="
+          groupedProducts.every((g) => g.products.length === 0) &&
+          ungroupedProducts.length === 0
+        "
         class="text-center py-20 bg-gray-50 rounded-3xl">
         <p class="text-2xl font-bold text-gray-400 mb-2">
           Tidak ada produk ditemukan
         </p>
+        <p class="text-gray-500">Coba pilih kategori lain</p>
       </div>
     </div>
   </div>
@@ -150,14 +136,14 @@ const filteredProducts = computed(() => {
   return products.value.filter((p) => p.category === activeCategory.value);
 });
 
-// Group products by 'jenis_id'
+// Group products (from the filtered list) by 'jenis_id'
 const groupedProducts = computed(() => {
-  if (!jenisList.value || !products.value) return [];
+  if (!jenisList.value || !filteredProducts.value) return [];
 
   // Map jenis to create groups
   const groups = jenisList.value.map((jenis) => {
-    // Filter products for this jenis
-    const groupProducts = products.value
+    // Filter filteredProducts for this jenis
+    const groupProducts = filteredProducts.value
       .filter((p) => p.jenis_id === jenis.id)
       .sort((a, b) => {
         // Sort by sort_index (ascending)
@@ -173,17 +159,15 @@ const groupedProducts = computed(() => {
     };
   });
 
-  // Filter out groups that have no products (optional, but requested to "group produk")
-  // The user didn't explicitly say hide empty groups, but usually good practice.
-  // However, the prompt says "grouped product as the same jenis", so having headers is key.
-  // Let's keep them even if empty or maybe filter? Let's keep for now.
   return groups;
 });
 
-// Capture products that don't have a valid jenis_id assigned (only show in All view)
+// Capture products from the filtered list that don't have a valid jenis_id assigned
 const ungroupedProducts = computed(() => {
-  if (!jenisList.value || !products.value) return [];
+  if (!jenisList.value || !filteredProducts.value) return [];
   const validIds = new Set(jenisList.value.map((j) => j.id));
-  return products.value.filter((p) => !p.jenis_id || !validIds.has(p.jenis_id));
+  return filteredProducts.value.filter(
+    (p) => !p.jenis_id || !validIds.has(p.jenis_id)
+  );
 });
 </script>
