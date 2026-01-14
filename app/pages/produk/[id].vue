@@ -12,9 +12,9 @@
     </div>
 
     <div class="container mx-auto px-4 py-12">
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
         <!-- Image Section -->
-        <div>
+        <div class="sticky top-24 self-start">
           <div
             class="aspect-4/3 bg-gray-50 rounded-2xl overflow-hidden flex items-center justify-center p-8 border border-gray-100 relative">
             <Transition
@@ -36,47 +36,42 @@
           <!-- Color Variants -->
           <div
             v-if="product.colors && product.colors.length > 0"
-            class="mt-6 flex justify-center">
-            <div class="inline-flex flex-col items-center">
-              <div class="flex flex-wrap gap-3 justify-center">
-                <button
-                  v-for="(color, index) in product.colors"
-                  :key="index"
-                  @click="selectedColor = color"
-                  class="group relative w-10 h-10 rounded-full border-2 transition-all flex items-center justify-center shadow-sm"
-                  :class="
-                    selectedColor === color
-                      ? 'border-red-600 ring-2 ring-red-100 scale-110'
-                      : 'border-white ring-1 ring-gray-200 hover:scale-105'
-                  "
-                  :style="{ backgroundColor: color.hex || '#ccc' }"
-                  :title="color.name">
-                  <!-- Checkmark for selected -->
-                  <span
-                    v-if="selectedColor === color"
-                    class="text-white drop-shadow-md">
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="16"
-                      height="16"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="3"
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      class="feather feather-check">
-                      <polyline points="20 6 9 17 4 12"></polyline>
-                    </svg>
-                  </span>
-
-                  <!-- Tooltip -->
-                  <span
-                    class="absolute -bottom-8 left-1/2 transform -translate-x-1/2 bg-gray-900 text-white text-xs py-1 px-2 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none z-10">
-                    {{ color.name }}
-                  </span>
-                </button>
-              </div>
+            class="mt-6 flex flex-col items-center">
+            <div class="flex flex-wrap gap-3 justify-center mb-3">
+              <button
+                v-for="(color, index) in product.colors"
+                :key="index"
+                @click="selectedColor = color"
+                class="group relative w-10 h-10 rounded-full border-2 transition-all flex items-center justify-center shadow-sm"
+                :class="
+                  selectedColor === color
+                    ? 'border-red-600 ring-2 ring-red-100 scale-110'
+                    : 'border-white ring-1 ring-gray-200 hover:scale-105'
+                "
+                :style="{ backgroundColor: color.hex || '#ccc' }"
+                :title="color.name">
+                <!-- Checkmark for selected -->
+                <span
+                  v-if="selectedColor === color"
+                  class="text-white drop-shadow-md">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="16"
+                    height="16"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="3"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    class="feather feather-check">
+                    <polyline points="20 6 9 17 4 12"></polyline>
+                  </svg>
+                </span>
+              </button>
+            </div>
+            <div class="text-center" v-if="selectedColor">
+              <p class="text-gray-900 font-bold">{{ selectedColor.name }}</p>
             </div>
           </div>
         </div>
@@ -140,14 +135,47 @@
             <h3 class="text-xl font-bold mb-4 border-b pb-2">
               Spesifikasi Singkat
             </h3>
-            <div class="grid grid-cols-1 gap-y-3">
-              <div
-                v-for="(spec, index) in product.specs"
-                :key="index"
-                class="flex justify-between py-2 border-b border-gray-50 last:border-0 hover:bg-gray-50 px-2 rounded-lg transition-colors">
-                <span class="text-gray-500 font-medium">{{ spec.label }}</span>
-                <span class="text-gray-900 font-bold">{{ spec.value }}</span>
-              </div>
+            <div class="space-y-6">
+              <template v-if="product.specs && !Array.isArray(product.specs)">
+                <div
+                  v-for="(groupSpecs, groupName) in product.specs"
+                  :key="groupName">
+                  <h4
+                    class="font-bold text-gray-800 uppercase text-sm border-b pb-1 mb-3">
+                    {{ groupName }}
+                  </h4>
+                  <div class="grid grid-cols-1 gap-y-2">
+                    <div
+                      v-for="(spec, index) in groupSpecs"
+                      :key="index"
+                      class="flex justify-between py-2 border-b border-gray-50 last:border-0 hover:bg-gray-50 px-2 rounded-lg transition-colors">
+                      <span class="text-gray-500 font-medium text-sm">{{
+                        spec.label
+                      }}</span>
+                      <span class="text-gray-900 font-bold text-sm">{{
+                        spec.value
+                      }}</span>
+                    </div>
+                  </div>
+                </div>
+              </template>
+
+              <!-- Legacy Fallback -->
+              <template v-else>
+                <div class="grid grid-cols-1 gap-y-3">
+                  <div
+                    v-for="(spec, index) in product.specs"
+                    :key="index"
+                    class="flex justify-between py-2 border-b border-gray-50 last:border-0 hover:bg-gray-50 px-2 rounded-lg transition-colors">
+                    <span class="text-gray-500 font-medium">{{
+                      spec.label
+                    }}</span>
+                    <span class="text-gray-900 font-bold">{{
+                      spec.value
+                    }}</span>
+                  </div>
+                </div>
+              </template>
             </div>
           </div>
         </div>
@@ -180,7 +208,9 @@ const productId = computed(() => {
 
 const product = computed(() => getProductById(productId.value));
 
-const selectedColor = ref(null);
+const selectedColor = ref<{ name: string; image: string; hex: string } | null>(
+  null
+);
 
 // Reset selected color when product changes
 watch(product, (newVal) => {

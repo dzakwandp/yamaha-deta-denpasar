@@ -143,39 +143,48 @@
       </div>
 
       <!-- Specs Builder -->
-      <div>
-        <div class="flex justify-between items-center mb-4">
-          <label class="block text-sm font-medium text-gray-700"
-            >Spesifikasi</label
-          >
-          <button
-            type="button"
-            @click="addSpec"
-            class="text-xs font-bold text-red-600 hover:text-red-700">
-            + Tambah Spesifikasi
-          </button>
-        </div>
-        <div class="space-y-3">
-          <div
-            v-for="(spec, index) in form.specs"
-            :key="index"
-            class="flex gap-4">
-            <input
-              v-model="spec.label"
-              type="text"
-              class="w-1/3 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"
-              placeholder="Label (e.g. Mesin)" />
-            <input
-              v-model="spec.value"
-              type="text"
-              class="flex-1 px-3 py-2 bg-gray-50 border border-gray-200 rounded-lg text-sm"
-              placeholder="Nilai" />
+      <div class="space-y-6">
+        <h3 class="font-bold text-lg text-gray-800 border-b pb-2">
+          Spesifikasi Teknis
+        </h3>
+
+        <div
+          v-for="(groupSpecs, groupName) in form.specs"
+          :key="groupName"
+          class="bg-gray-50 p-4 rounded-xl border border-gray-100">
+          <div class="flex justify-between items-center mb-4">
+            <label class="block text-sm font-bold text-gray-700 capitalize">{{
+              groupName
+            }}</label>
             <button
               type="button"
-              @click="removeSpec(index)"
-              class="text-gray-400 hover:text-red-600">
-              ×
+              @click="addSpec(groupName as string)"
+              class="text-xs font-bold text-red-600 hover:text-red-700">
+              + Tambah Spec {{ groupName }}
             </button>
+          </div>
+          <div class="space-y-3">
+            <div
+              v-for="(spec, index) in groupSpecs"
+              :key="index"
+              class="flex gap-4">
+              <input
+                v-model="spec.label"
+                type="text"
+                class="w-1/3 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm"
+                placeholder="Label" />
+              <input
+                v-model="spec.value"
+                type="text"
+                class="flex-1 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm"
+                placeholder="Nilai" />
+              <button
+                type="button"
+                @click="removeSpec(groupName as string, index)"
+                class="text-gray-400 hover:text-red-600">
+                ×
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -305,7 +314,12 @@ const form = ref({
   tag: "",
   image: "",
   description: "",
-  specs: [{ label: "Mesin", value: "" }],
+  specs: {
+    Mesin: [{ label: "", value: "" }],
+    Rangka: [{ label: "", value: "" }],
+    Dimensi: [{ label: "", value: "" }],
+    Kelistrikan: [{ label: "", value: "" }],
+  } as Record<string, { label: string; value: string }[]>,
   colors: [] as { name: string; image: string; hex: string }[],
   is_featured: false,
 });
@@ -315,11 +329,28 @@ watch(
   () => props.initialData,
   (val) => {
     if (val) {
+      let specsData = {
+        Mesin: [{ label: "", value: "" }],
+        Rangka: [{ label: "", value: "" }],
+        Dimensi: [{ label: "", value: "" }],
+        Kelistrikan: [{ label: "", value: "" }],
+      };
+
+      // Handle Legacy Array Data
+      if (Array.isArray(val.specs)) {
+        specsData.Mesin = val.specs.length
+          ? val.specs
+          : [{ label: "", value: "" }];
+      } else if (val.specs && typeof val.specs === "object") {
+        // Merge with defaults to ensure all keys exist
+        specsData = { ...specsData, ...val.specs };
+      }
+
       form.value = {
         ...val,
         jenis_id: val.jenis_id || "",
         sort_index: val.sort_index || 0,
-        specs: val.specs || [{ label: "Mesin", value: "" }],
+        specs: specsData,
         colors:
           val.colors?.map((c: any) => ({
             ...c,
@@ -372,12 +403,12 @@ const uploadToImgBB = async (file: File) => {
   return data.data.url;
 };
 
-const addSpec = () => {
-  form.value.specs.push({ label: "", value: "" });
+const addSpec = (groupName: string) => {
+  form.value.specs[groupName].push({ label: "", value: "" });
 };
 
-const removeSpec = (index: number) => {
-  form.value.specs.splice(index, 1);
+const removeSpec = (groupName: string, index: number) => {
+  form.value.specs[groupName].splice(index, 1);
 };
 
 const addColor = () => {
