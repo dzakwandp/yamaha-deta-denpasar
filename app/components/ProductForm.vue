@@ -307,6 +307,47 @@ const selectedColorFiles = ref<{ [key: number]: File }>({}); // Map index to fil
 const uploadProgress = ref(0);
 const isUploading = ref(false);
 
+// Default Specs Template
+const defaultSpecs = {
+  Mesin: [
+    { label: "Tipe Mesin", value: "" },
+    { label: "Jumlah / Posisi Silinder", value: "" },
+    { label: "Kapasitas Mesin", value: "" },
+    { label: "Diameter x Langkah", value: "" },
+    { label: "Perbandingan Kompresi", value: "" },
+    { label: "Daya Maksimum", value: "" },
+    { label: "Torsi Maksimum", value: "" },
+    { label: "Sistem Starter", value: "" },
+    { label: "Sistem Pelumasan", value: "" },
+    { label: "Kapasitas Oli Mesin", value: "" },
+    { label: "Sistem Bahan Bakar", value: "" },
+    { label: "Tipe Kopling", value: "" },
+    { label: "Tipe Transmisi", value: "" },
+  ],
+  Rangka: [
+    { label: "Tipe Rangka", value: "" },
+    { label: "Suspensi Depan", value: "" },
+    { label: "Suspensi Belakang", value: "" },
+    { label: "Ban Depan", value: "" },
+    { label: "Ban Belakang", value: "" },
+    { label: "Rem Depan", value: "" },
+    { label: "Rem Belakang", value: "" },
+  ],
+  Dimensi: [
+    { label: "P x L x T", value: "" },
+    { label: "Jarak Sumbu Roda", value: "" },
+    { label: "Jarak Terendah ke Tanah", value: "" },
+    { label: "Tinggi Tempat Duduk", value: "" },
+    { label: "Berat Isi", value: "" },
+    { label: "Kapasitas Tangki Bensin", value: "" },
+  ],
+  Kelistrikan: [
+    { label: "Sistem Pengapian", value: "" },
+    { label: "Battery", value: "" },
+    { label: "Tipe Busi", value: "" },
+  ],
+};
+
 const form = ref({
   name: "",
   category: "",
@@ -316,12 +357,10 @@ const form = ref({
   tag: "",
   image: "",
   description: "",
-  specs: {
-    Mesin: [{ label: "", value: "" }],
-    Rangka: [{ label: "", value: "" }],
-    Dimensi: [{ label: "", value: "" }],
-    Kelistrikan: [{ label: "", value: "" }],
-  } as Record<string, { label: string; value: string }[]>,
+  specs: JSON.parse(JSON.stringify(defaultSpecs)) as Record<
+    string,
+    { label: string; value: string }[]
+  >,
   colors: [] as { name: string; image: string; hex: string }[],
   is_featured: false,
 });
@@ -331,20 +370,16 @@ watch(
   () => props.initialData,
   (val) => {
     if (val) {
-      let specsData = {
-        Mesin: [{ label: "", value: "" }],
-        Rangka: [{ label: "", value: "" }],
-        Dimensi: [{ label: "", value: "" }],
-        Kelistrikan: [{ label: "", value: "" }],
-      };
+      let specsData = JSON.parse(JSON.stringify(defaultSpecs));
 
       // Handle Legacy Array Data
       if (Array.isArray(val.specs)) {
-        specsData.Mesin = val.specs.length
-          ? val.specs
-          : [{ label: "", value: "" }];
+        // If legacy array, we might want to keep it or migrate. For now, let's just use it if it flows.
+        // But better to just override if it's new structure.
       } else if (val.specs && typeof val.specs === "object") {
-        // Merge with defaults to ensure all keys exist
+        // Merge - if existing has value, use it. If not, use default label.
+        // Actually, for Edit, we should trust what's in DB mainly.
+        // But if DB has partial keys, we want to ensure all keys exist.
         specsData = { ...specsData, ...val.specs };
       }
 

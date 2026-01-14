@@ -142,16 +142,14 @@
             </h3>
             <div class="space-y-6">
               <template v-if="product.specs && !Array.isArray(product.specs)">
-                <div
-                  v-for="(groupSpecs, groupName) in product.specs"
-                  :key="groupName">
+                <div v-for="group in orderedSpecs" :key="group.name">
                   <h4
                     class="font-bold text-gray-800 uppercase text-sm border-b pb-1 mb-3">
-                    {{ groupName }}
+                    {{ group.name }}
                   </h4>
                   <div class="grid grid-cols-1 gap-y-2">
                     <div
-                      v-for="(spec, index) in groupSpecs"
+                      v-for="(spec, index) in group.items"
                       :key="index"
                       class="flex justify-between py-2 border-b border-gray-50 last:border-0 hover:bg-gray-50 px-2 rounded-lg transition-colors">
                       <span class="text-gray-500 font-medium text-sm">{{
@@ -212,6 +210,40 @@ const productId = computed(() => {
 });
 
 const product = computed(() => getProductById(productId.value));
+
+// Spec Ordering Logic
+const specOrder = ["Mesin", "Rangka", "Dimensi", "Kelistrikan"];
+const orderedSpecs = computed(() => {
+  if (
+    !product.value ||
+    !product.value.specs ||
+    Array.isArray(product.value.specs)
+  ) {
+    return [];
+  }
+
+  const specs = product.value.specs;
+  const keys = Object.keys(specs).sort((a, b) => {
+    const startA = specOrder.indexOf(a);
+    const startB = specOrder.indexOf(b);
+
+    // If both are in the known order list
+    if (startA !== -1 && startB !== -1) {
+      return startA - startB;
+    }
+    // If only A is in the list, A comes first
+    if (startA !== -1) return -1;
+    // If only B is in the list, B comes first
+    if (startB !== -1) return 1;
+    // Neither in list, sort alphabetically/default
+    return a.localeCompare(b);
+  });
+
+  return keys.map((key) => ({
+    name: key,
+    items: specs[key],
+  }));
+});
 
 const selectedColor = ref<{ name: string; image: string; hex: string } | null>(
   null

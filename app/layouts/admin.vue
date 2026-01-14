@@ -78,7 +78,8 @@
           <span>🚪</span> Keluar
         </button>
         <div class="mt-4 text-xs text-gray-500 text-center">
-          &copy; 2024 Yamaha Deta Denpasar
+          &copy; 2026 Yamaha Deta Denpasar |
+          <a href="https://dzakwandp.id" target="_blank">dzakwandp.id</a>
         </div>
       </div>
     </aside>
