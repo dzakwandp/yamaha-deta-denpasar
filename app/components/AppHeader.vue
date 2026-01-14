@@ -25,7 +25,7 @@
           >Artikel</NuxtLink
         >
         <NuxtLink
-          to="/pricelist"
+          to="/harga"
           class="text-sm font-medium text-gray-700 hover:text-red-600 transition-colors uppercase tracking-wide"
           >Harga</NuxtLink
         >
@@ -238,7 +238,7 @@
           >Artikel</NuxtLink
         >
         <NuxtLink
-          to="/pricelist"
+          to="/harga"
           class="text-base font-medium text-gray-800 py-2 border-b border-gray-50"
           @click="isMenuOpen = false"
           >Harga</NuxtLink

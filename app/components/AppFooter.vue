@@ -60,7 +60,7 @@
             </li>
             <li>
               <NuxtLink
-                to="/pricelist"
+                to="/harga"
                 class="text-gray-400 hover:text-red-500 transition-colors"
                 >Daftar Harga</NuxtLink
               >
