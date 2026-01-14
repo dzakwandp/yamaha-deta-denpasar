@@ -27,15 +27,25 @@ onMounted(async () => {
   category.value = await getCategory(categoryId);
 });
 
-const handleUpdate = async ({ data, file }: { data: any; file: File }) => {
+const handleSubmit = async (data: any) => {
   loading.value = true;
   try {
-    await updateCategory(categoryId, data, file);
-    alert("Kategori berhasil diupdate!");
+    await updateCategory(categoryId, data);
+    await Swal.fire({
+      title: "Berhasil!",
+      text: "Kategori berhasil diupdate!",
+      icon: "success",
+      timer: 1500,
+      showConfirmButton: false,
+    });
     router.push("/dashadmin/kategori");
   } catch (e) {
     console.error(e);
-    alert("Gagal mengupdate kategori");
+    Swal.fire({
+      title: "Error!",
+      text: "Gagal mengupdate kategori.",
+      icon: "error",
+    });
   } finally {
     loading.value = false;
   }

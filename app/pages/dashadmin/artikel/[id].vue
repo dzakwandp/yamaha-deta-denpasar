@@ -27,15 +27,31 @@ onMounted(async () => {
   article.value = await getArticle(articleId);
 });
 
-const handleUpdate = async ({ data, file }: { data: any; file: File }) => {
+const handleSubmit = async ({
+  data,
+  file,
+}: {
+  data: any;
+  file: File | null;
+}) => {
   loading.value = true;
   try {
     await updateArticle(articleId, data, file);
-    alert("Artikel berhasil diupdate!");
+    await Swal.fire({
+      title: "Berhasil!",
+      text: "Artikel berhasil diupdate!",
+      icon: "success",
+      timer: 2000,
+      showConfirmButton: false,
+    });
     router.push("/dashadmin/artikel");
   } catch (e) {
     console.error(e);
-    alert("Gagal mengupdate artikel");
+    Swal.fire({
+      title: "Error!",
+      text: "Gagal mengupdate artikel.",
+      icon: "error",
+    });
   } finally {
     loading.value = false;
   }

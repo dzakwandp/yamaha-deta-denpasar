@@ -80,7 +80,7 @@
                   ✏️
                 </NuxtLink>
                 <button
-                  @click="handleDelete(profile.id)"
+                  @click="handleDelete(profile.id, profile.nama)"
                   class="p-2 text-gray-400 hover:text-red-600 hover:bg-red-50 rounded-lg transition-colors">
                   🗑️
                 </button>
@@ -106,15 +106,38 @@ definePageMeta({
 
 const { profiles, deleteProfile } = useProfile();
 
-const handleDelete = async (id: string | undefined) => {
-  if (!id) return;
-  if (confirm("Apakah anda yakin ingin menghapus profil ini?")) {
-    try {
-      await deleteProfile(id);
-    } catch (e) {
-      alert("Gagal menghapus profil");
-      console.error(e);
-    }
+import Swal from "sweetalert2";
+
+const handleDelete = async (id: string, name: string) => {
+  const result = await Swal.fire({
+    title: `Hapus "${name}"?`,
+    text: "Profil yang dihapus tidak dapat dikembalikan!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Ya, Hapus!",
+    cancelButtonText: "Batal",
+  });
+
+  if (!result.isConfirmed) return;
+
+  try {
+    await deleteProfile(id);
+    Swal.fire({
+      title: "Berhasil!",
+      text: "Profil berhasil dihapus.",
+      icon: "success",
+      timer: 1500,
+      showConfirmButton: false,
+    });
+  } catch (e) {
+    console.error(e);
+    Swal.fire({
+      title: "Error!",
+      text: "Gagal menghapus profil.",
+      icon: "error",
+    });
   }
 };
 </script>

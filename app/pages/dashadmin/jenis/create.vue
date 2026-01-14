@@ -45,15 +45,28 @@ const router = useRouter();
 const loading = ref(false);
 const name = ref("");
 
+import Swal from "sweetalert2";
+
 const handleSubmit = async () => {
+  // Changed to not accept 'data' to match template call
   loading.value = true;
   try {
-    await createJenis({ name: name.value });
-    alert("Berhasil menambahkan jenis produk");
+    await createJenis({ name: name.value }); // Kept original call with name.value
+    await Swal.fire({
+      title: "Berhasil!",
+      text: "Berhasil menambahkan jenis produk.",
+      icon: "success",
+      timer: 1500,
+      showConfirmButton: false,
+    });
     router.push("/dashadmin/jenis");
   } catch (e) {
     console.error(e);
-    alert("Gagal menambahkan data");
+    Swal.fire({
+      title: "Error!",
+      text: "Gagal menambahkan data.",
+      icon: "error",
+    });
   } finally {
     loading.value = false;
   }

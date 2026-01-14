@@ -60,7 +60,7 @@
                   Edit
                 </NuxtLink>
                 <button
-                  @click="deleteProduct(product.id)"
+                  @click="handleDelete(product.id, product.name)"
                   class="px-3 py-1.5 bg-red-50 text-red-600 rounded-lg text-sm font-bold hover:bg-red-100">
                   Hapus
                 </button>
@@ -78,25 +78,45 @@
 </template>
 
 <script setup lang="ts">
-import { doc, deleteDoc } from "firebase/firestore";
-
 definePageMeta({
   layout: "admin",
 });
 
-const { products } = useProducts();
+import Swal from "sweetalert2";
+
+const { products, deleteProduct } = useProducts();
 const db = useFirestore();
 
-const deleteProduct = async (id: number) => {
-  if (!confirm("Apakah anda yakin ingin menghapus produk ini?")) return;
+const handleDelete = async (id: string, name: string) => {
+  const result = await Swal.fire({
+    title: `Hapus ${name}?`,
+    text: "Data yang dihapus tidak dapat dikembalikan!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Ya, Hapus!",
+    cancelButtonText: "Batal",
+  });
+
+  if (!result.isConfirmed) return;
 
   try {
-    // Delete from Firestore
-    await deleteDoc(doc(db, "products", id.toString()));
-    alert("Produk berhasil dihapus");
+    await deleteProduct(id);
+    Swal.fire({
+      title: "Berhasil!",
+      text: "Produk berhasil dihapus.",
+      icon: "success",
+      timer: 2000,
+      showConfirmButton: false,
+    });
   } catch (e) {
     console.error(e);
-    alert("Gagal menghapus produk");
+    Swal.fire({
+      title: "Gagal!",
+      text: "Gagal menghapus produk.",
+      icon: "error",
+    });
   }
 };
 </script>

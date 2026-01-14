@@ -1,4 +1,5 @@
 import { collection, doc, setDoc, getFirestore } from "firebase/firestore";
+import Swal from "sweetalert2";
 
 export const seedDatabase = async (dbRef: any) => {
   // Static data from previous useProducts
@@ -144,9 +145,17 @@ export const seedDatabase = async (dbRef: any) => {
       console.log(`Seeded product ${product.id}`);
     }
     console.log("Seeding complete!");
-    alert("Database seeded successfully!");
+    Swal.fire({
+      title: "Success",
+      text: "Database seeded successfully!",
+      icon: "success",
+    });
   } catch (e) {
     console.error("Error seeding database:", e);
-    alert("Error seeding database. Check console.");
+    Swal.fire({
+      title: "Error",
+      text: "Error seeding database. Check console.",
+      icon: "error",
+    });
   }
 };

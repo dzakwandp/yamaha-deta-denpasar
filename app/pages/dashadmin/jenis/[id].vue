@@ -63,21 +63,38 @@ onMounted(async () => {
     }
   } catch (e) {
     console.error(e);
-    alert("Gagal memuat data");
+    await Swal.fire({
+      title: "Error!",
+      text: "Gagal memuat data.",
+      icon: "error",
+    });
   } finally {
     loadingData.value = false;
   }
 });
 
+import Swal from "sweetalert2";
+
 const handleSubmit = async () => {
+  // Changed signature to match form submission
   loading.value = true;
   try {
-    await updateJenis(jenisId, { name: name.value });
-    alert("Berhasil memperbarui jenis produk");
+    await updateJenis(jenisId, { name: name.value }); // Changed to use name.value
+    await Swal.fire({
+      title: "Berhasil!",
+      text: "Berhasil memperbarui jenis produk.",
+      icon: "success",
+      timer: 1500,
+      showConfirmButton: false,
+    });
     router.push("/dashadmin/jenis");
   } catch (e) {
     console.error(e);
-    alert("Gagal memperbarui data");
+    Swal.fire({
+      title: "Error!",
+      text: "Gagal memperbarui data.",
+      icon: "error",
+    });
   } finally {
     loading.value = false;
   }

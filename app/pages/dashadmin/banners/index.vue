@@ -44,19 +44,47 @@
 </template>
 
 <script setup lang="ts">
+// import { db } from "@/firebase"; // Removed invalid import
+import { doc, deleteDoc } from "firebase/firestore";
+import Swal from "sweetalert2";
+
 definePageMeta({
   layout: "admin",
 });
 
-const { banners, deleteBanner } = useBanners();
+const { banners } = useBanners();
+const db = useFirestore(); // Use composable instead
 
 const handleDelete = async (id: string) => {
-  if (confirm("Apakah anda yakin ingin menghapus banner ini?")) {
-    try {
-      await deleteBanner(id);
-    } catch (e) {
-      alert("Gagal menghapus banner");
-    }
+  const result = await Swal.fire({
+    title: "Hapus Banner?",
+    text: "Banner yang dihapus tidak dapat dikembalikan!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Ya, Hapus!",
+    cancelButtonText: "Batal",
+  });
+
+  if (!result.isConfirmed) return;
+
+  try {
+    await deleteDoc(doc(db, "banners", id));
+    Swal.fire({
+      title: "Berhasil!",
+      text: "Banner berhasil dihapus.",
+      icon: "success",
+      timer: 1500,
+      showConfirmButton: false,
+    });
+  } catch (e) {
+    console.error(e);
+    Swal.fire({
+      title: "Error!",
+      text: "Gagal menghapus banner.",
+      icon: "error",
+    });
   }
 };
 </script>

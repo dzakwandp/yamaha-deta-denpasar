@@ -38,7 +38,7 @@
                   Edit
                 </button>
                 <button
-                  @click="handleDelete(jenis.id)"
+                  @click="handleDelete(jenis.id, jenis.name)"
                   class="text-red-600 hover:text-red-800 font-medium text-sm">
                   Hapus
                 </button>
@@ -64,14 +64,38 @@ definePageMeta({
 const { jenisList, deleteJenis } = useJenis();
 const router = useRouter();
 
-const handleDelete = async (id: string) => {
-  if (confirm("Apakah anda yakin ingin menghapus jenis ini?")) {
-    try {
-      await deleteJenis(id);
-      alert("Data berhasil dihapus");
-    } catch (e) {
-      alert("Gagal menghapus data");
-    }
+import Swal from "sweetalert2";
+
+const handleDelete = async (id: string, name: string) => {
+  const result = await Swal.fire({
+    title: `Hapus "${name}"?`,
+    text: "Jenis Produk yang dihapus tidak dapat dikembalikan!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Ya, Hapus!",
+    cancelButtonText: "Batal",
+  });
+
+  if (!result.isConfirmed) return;
+
+  try {
+    await deleteJenis(id);
+    Swal.fire({
+      title: "Berhasil!",
+      text: "Data berhasil dihapus.",
+      icon: "success",
+      timer: 1500,
+      showConfirmButton: false,
+    });
+  } catch (e) {
+    console.error(e);
+    Swal.fire({
+      title: "Error!",
+      text: "Gagal menghapus data.",
+      icon: "error",
+    });
   }
 };
 </script>

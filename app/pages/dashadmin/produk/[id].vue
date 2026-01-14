@@ -27,6 +27,8 @@ const productId = parseInt(route.params.id as string);
 const product = computed(() => getProductById(productId));
 const loading = ref(false);
 
+import Swal from "sweetalert2";
+
 const handleUpdate = async (data: any) => {
   if (!product.value) return;
 
@@ -34,11 +36,21 @@ const handleUpdate = async (data: any) => {
   try {
     // Firestore expects string ID for doc ref
     await updateDoc(doc(db, "products", product.value.id.toString()), data);
-    alert("Produk berhasil diperbarui!");
+    await Swal.fire({
+      title: "Berhasil!",
+      text: "Produk berhasil diperbarui!",
+      icon: "success",
+      timer: 2000,
+      showConfirmButton: false,
+    });
     router.push("/dashadmin/produk");
   } catch (e) {
     console.error(e);
-    alert("Gagal memperbarui produk");
+    Swal.fire({
+      title: "Error!",
+      text: "Gagal memperbarui produk.",
+      icon: "error",
+    });
   } finally {
     loading.value = false;
   }

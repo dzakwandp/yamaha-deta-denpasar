@@ -105,8 +105,20 @@ useHead({
   },
 });
 
-const handleLogout = () => {
-  if (confirm("Apakah anda yakin ingin keluar?")) {
+import Swal from "sweetalert2";
+
+const handleLogout = async () => {
+  const result = await Swal.fire({
+    title: "Apakah anda yakin ingin keluar?",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Ya, Keluar!",
+    cancelButtonText: "Batal",
+  });
+
+  if (result.isConfirmed) {
     logout();
   }
 };

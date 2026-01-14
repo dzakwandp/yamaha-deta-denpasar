@@ -298,6 +298,8 @@ const props = defineProps<{
 const emit = defineEmits(["submit"]);
 
 const config = useRuntimeConfig();
+import { ref, computed, watch } from "vue";
+import Swal from "sweetalert2";
 const { categories } = useCategory(); // Keeping for legacy/compatibility if needed
 const { jenisList } = useJenis();
 const selectedFile = ref<File | null>(null);
@@ -431,14 +433,26 @@ const save = async () => {
     }
 
     // Upload color images
+
+    // ...
+
     for (const index in selectedColorFiles.value) {
       const file = selectedColorFiles.value[index];
       if (file) {
-        const imageUrl = await uploadToImgBB(file);
-        // @ts-ignore
-        if (form.value.colors[index]) {
+        try {
+          const imageUrl = await uploadToImgBB(file);
           // @ts-ignore
-          form.value.colors[index].image = imageUrl;
+          if (form.value.colors[index]) {
+            // @ts-ignore
+            form.value.colors[index].image = imageUrl;
+          }
+        } catch (e) {
+          Swal.fire({
+            title: "Upload Gagal",
+            text: "Gagal mengupload gambar: " + (e as any).message,
+            icon: "error",
+          });
+          return; // Stop saving if upload fails
         }
       }
     }

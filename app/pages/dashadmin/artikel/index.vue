@@ -76,7 +76,7 @@
                     ✏️
                   </NuxtLink>
                   <button
-                    @click="handleDelete(article.id)"
+                    @click="handleDelete(article.id, article.judul)"
                     class="p-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
                     title="Hapus">
                     🗑️
@@ -98,6 +98,7 @@
 
 <script setup lang="ts">
 import { Timestamp } from "firebase/firestore";
+import Swal from "sweetalert2";
 
 definePageMeta({
   layout: "admin",
@@ -110,16 +111,38 @@ onMounted(async () => {
   articles.value = await getArticles();
 });
 
-const handleDelete = async (id: string) => {
-  if (confirm("Apakah anda yakin ingin menghapus artikel ini?")) {
-    try {
-      await deleteArticle(id);
-      // Refresh list
-      articles.value = await getArticles();
-    } catch (e) {
-      console.error(e);
-      alert("Gagal menghapus artikel");
-    }
+const handleDelete = async (id: string, title: string) => {
+  const result = await Swal.fire({
+    title: `Hapus "${title}"?`,
+    text: "Artikel yang dihapus tidak dapat dikembalikan!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Ya, Hapus!",
+    cancelButtonText: "Batal",
+  });
+
+  if (!result.isConfirmed) return;
+
+  try {
+    await deleteArticle(id);
+    Swal.fire({
+      title: "Berhasil!",
+      text: "Artikel berhasil dihapus.",
+      icon: "success",
+      timer: 2000,
+      showConfirmButton: false,
+    });
+    // Refresh list
+    articles.value = await getArticles();
+  } catch (e) {
+    console.error(e);
+    Swal.fire({
+      title: "Error!",
+      text: "Gagal menghapus artikel.",
+      icon: "error",
+    });
   }
 };
 

@@ -89,14 +89,38 @@ definePageMeta({
 
 const { categories, deleteCategory } = useCategory();
 
-const handleDelete = async (id: string) => {
-  if (confirm("Apakah anda yakin ingin menghapus kategori ini?")) {
-    try {
-      await deleteCategory(id);
-    } catch (e) {
-      console.error(e);
-      alert("Gagal menghapus kategori");
-    }
+import Swal from "sweetalert2";
+
+const handleDelete = async (id: string, name: string) => {
+  const result = await Swal.fire({
+    title: `Hapus "${name}"?`,
+    text: "Kategori yang dihapus tidak dapat dikembalikan!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#d33",
+    cancelButtonColor: "#3085d6",
+    confirmButtonText: "Ya, Hapus!",
+    cancelButtonText: "Batal",
+  });
+
+  if (!result.isConfirmed) return;
+
+  try {
+    await deleteCategory(id);
+    Swal.fire({
+      title: "Berhasil!",
+      text: "Kategori berhasil dihapus.",
+      icon: "success",
+      timer: 1500,
+      showConfirmButton: false,
+    });
+  } catch (e) {
+    console.error(e);
+    Swal.fire({
+      title: "Error!",
+      text: "Gagal menghapus kategori.",
+      icon: "error",
+    });
   }
 };
 </script>
