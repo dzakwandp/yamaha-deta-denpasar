@@ -60,6 +60,12 @@
                   Edit
                 </NuxtLink>
                 <button
+                  @click="handleDuplicate(product)"
+                  class="px-3 py-1.5 bg-gray-50 text-gray-600 rounded-lg text-sm font-bold hover:bg-gray-100"
+                  title="Duplikat">
+                  📋
+                </button>
+                <button
                   @click="handleDelete(product.id, product.name)"
                   class="px-3 py-1.5 bg-red-50 text-red-600 rounded-lg text-sm font-bold hover:bg-red-100">
                   Hapus
@@ -84,7 +90,7 @@ definePageMeta({
 
 import Swal from "sweetalert2";
 
-const { products, deleteProduct } = useProducts();
+const { products, deleteProduct, duplicateProduct } = useProducts();
 const db = useFirestore();
 
 const handleDelete = async (id: string, name: string) => {
@@ -115,6 +121,39 @@ const handleDelete = async (id: string, name: string) => {
     Swal.fire({
       title: "Gagal!",
       text: "Gagal menghapus produk.",
+      icon: "error",
+    });
+  }
+};
+
+const handleDuplicate = async (product: any) => {
+  const result = await Swal.fire({
+    title: `Duplikat ${product.name}?`,
+    text: "Akan membuat salinan produk ini.",
+    icon: "question",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Ya, Duplikat!",
+    cancelButtonText: "Batal",
+  });
+
+  if (!result.isConfirmed) return;
+
+  try {
+    await duplicateProduct(product);
+    Swal.fire({
+      title: "Berhasil!",
+      text: "Produk berhasil diduplikat.",
+      icon: "success",
+      timer: 2000,
+      showConfirmButton: false,
+    });
+  } catch (e) {
+    console.error(e);
+    Swal.fire({
+      title: "Gagal!",
+      text: "Gagal menduplikat produk.",
       icon: "error",
     });
   }
