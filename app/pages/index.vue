@@ -91,6 +91,7 @@
           <div
             v-for="cat in categories"
             :key="cat.name"
+            @click="navigateToCategory(cat.name)"
             class="bg-white p-6 rounded-2xl shadow-sm hover:shadow-md transition-all text-center group cursor-pointer border border-gray-100">
             <div
               class="w-16 h-16 mx-auto mb-4 bg-gray-100 rounded-full flex items-center justify-center group-hover:bg-red-50 transition-colors overflow-hidden">
@@ -192,6 +193,14 @@ useHead({
 });
 
 const { categories } = useCategory();
+const router = useRouter();
+
+const navigateToCategory = (categoryName: string) => {
+  router.push({
+    path: "/produk",
+    query: { category: categoryName },
+  });
+};
 
 const { products } = useProducts();
 const { banners } = useBanners();

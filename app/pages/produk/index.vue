@@ -119,12 +119,34 @@ const { products } = useProducts();
 const { jenisList } = useJenis();
 const { categories: categoryDocs } = useCategory();
 
+const route = useRoute();
+const router = useRouter();
+
 // Extract just names for the filter buttons
 const categories = computed(() => {
   if (!categoryDocs.value) return [];
   return categoryDocs.value.map((c) => c.name);
 });
-const activeCategory = ref("All");
+
+// Initialize with query param or 'All'
+const activeCategory = ref((route.query.category as string) || "All");
+
+// Update URL when category changes
+watch(activeCategory, (newVal) => {
+  if (newVal === "All") {
+    router.replace({ query: {} });
+  } else {
+    router.replace({ query: { category: newVal } });
+  }
+});
+
+// Watch URL changes (e.g. back button)
+watch(
+  () => route.query.category,
+  (newVal) => {
+    activeCategory.value = (newVal as string) || "All";
+  }
+);
 
 // Filtered products for when a specific category is selected
 const filteredProducts = computed(() => {
