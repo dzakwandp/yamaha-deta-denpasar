@@ -22,7 +22,9 @@
               :src="product.image"
               :alt="product.name"
               class="absolute inset-0 w-full h-full object-contain p-8 transition-all duration-500 group-hover:scale-105"
-              :class="!selectedColor ? 'opacity-100 z-10' : 'opacity-0 z-0'" />
+              :class="
+                !selectedColor ? 'opacity-100 z-10' : 'opacity-0 z-0 delay-100'
+              " />
 
             <!-- Color Variant Images -->
             <template v-if="product.colors && product.colors.length > 0">
@@ -33,7 +35,9 @@
                 :alt="`${product.name} - ${color.name}`"
                 class="absolute inset-0 w-full h-full object-contain p-8 transition-all duration-500 group-hover:scale-105"
                 :class="
-                  selectedColor === color ? 'opacity-100 z-10' : 'opacity-0 z-0'
+                  selectedColor === color
+                    ? 'opacity-100 z-10'
+                    : 'opacity-0 z-0 delay-100'
                 " />
             </template>
           </div>
