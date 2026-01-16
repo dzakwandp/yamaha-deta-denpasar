@@ -260,7 +260,7 @@
       </div>
     </section>
     <!-- Sales Profile Popup -->
-    <Transition
+    <!-- <Transition
       enter-active-class="transition ease-out duration-300"
       enter-from-class="opacity-0 scale-90"
       enter-to-class="opacity-100 scale-100"
@@ -270,31 +270,31 @@
       <div
         v-if="showProfilePopup && profile"
         class="fixed inset-0 z-50 flex items-center justify-center p-4">
-        <!-- Backdrop -->
+        
         <div
           class="absolute inset-0 bg-black/60 backdrop-blur-sm"
           @click="showProfilePopup = false"></div>
 
-        <!-- Card -->
+        
         <div
           class="relative bg-white rounded-3xl shadow-2xl w-full max-w-sm overflow-hidden transform">
-          <!-- Decor -->
+         
           <div
             class="absolute top-0 right-0 w-48 h-48 bg-red-50 rounded-full -mr-24 -mt-24 z-0"></div>
           <div
             class="absolute bottom-0 left-0 w-32 h-32 bg-gray-50 rounded-full -ml-16 -mb-16 z-0"></div>
 
-          <!-- Close Button -->
+          
           <button
             @click="showProfilePopup = false"
             class="absolute top-4 right-4 z-20 w-8 h-8 flex items-center justify-center bg-gray-100 hover:bg-gray-200 rounded-full transition-colors">
             <span class="text-gray-700 font-bold">×</span>
           </button>
 
-          <!-- Content -->
+         
           <div
             class="relative z-10 pt-10 pb-8 px-6 text-center flex flex-col items-center">
-            <!-- Image -->
+        
             <div class="relative w-32 h-32 mb-4">
               <div
                 class="w-full h-full rounded-full border-4 border-white shadow-lg overflow-hidden bg-gray-100">
@@ -348,7 +348,7 @@
           </div>
         </div>
       </div>
-    </Transition>
+    </Transition> -->
   </div>
 </template>
 
