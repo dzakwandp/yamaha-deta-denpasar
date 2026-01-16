@@ -132,10 +132,31 @@
               </svg>
               Whatsapp Widya
             </a>
+            <button
+              v-if="product.brochure"
+              @click="openBrochure(product.brochure)"
+              class="flex-1 px-8 py-4 bg-gray-900 hover:bg-gray-800 text-white text-center rounded-xl font-bold transition-all shadow-lg hover:shadow-gray-900/20 flex items-center justify-center gap-2">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                class="feather feather-book-open">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+              </svg>
+              Lihat Brosur
+            </button>
             <a
+              v-else
               href="#"
-              class="flex-1 px-8 py-4 bg-gray-900 hover:bg-gray-800 text-white text-center rounded-xl font-bold transition-all shadow-lg hover:shadow-gray-900/20">
-              Unduh Brosur
+              class="flex-1 px-8 py-4 bg-gray-200 text-gray-400 text-center rounded-xl font-bold cursor-not-allowed flex items-center justify-center gap-2">
+              Brosur Belum Tersedia
             </a>
           </div>
 
@@ -312,6 +333,8 @@
 </template>
 
 <script setup lang="ts">
+import "viewerjs/dist/viewer.css";
+import Viewer from "viewerjs";
 const route = useRoute();
 const { getProductById } = useProducts();
 const { profiles } = useProfile();
@@ -390,6 +413,48 @@ const toggleSpecGroup = (groupName: string) => {
 
 const isGroupOpen = (groupName: string) => {
   return openSpecGroups.value.includes(groupName);
+};
+
+// Brochure Viewer Logic
+const openBrochure = (url: string) => {
+  // Check if it's a PDF
+  if (url.toLowerCase().endsWith(".pdf")) {
+    window.open(url, "_blank");
+    return;
+  }
+
+  // Create a hidden image element
+  const image = document.createElement("img");
+  image.src = url;
+  image.alt = "Brochure";
+  image.style.display = "none";
+  document.body.appendChild(image);
+
+  // Initialize Viewer
+  const viewer = new Viewer(image, {
+    hidden: () => {
+      viewer.destroy();
+      document.body.removeChild(image);
+    },
+    toolbar: {
+      zoomIn: 1,
+      zoomOut: 1,
+      oneToOne: 1,
+      reset: 1,
+      prev: 0,
+      play: {
+        show: 0,
+        size: "large",
+      },
+      next: 0,
+      rotateLeft: 1,
+      rotateRight: 1,
+      flipHorizontal: 1,
+      flipVertical: 1,
+    },
+  });
+
+  viewer.show();
 };
 
 // Reset selected color when product changes

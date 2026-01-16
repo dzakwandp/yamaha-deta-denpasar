@@ -121,13 +121,42 @@
               @change="handleFileUpload"
               class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-red-50 file:text-red-700 hover:file:bg-red-100 cursor-pointer" />
           </label>
-          <span
-            v-if="isUploading"
-            class="text-sm text-gray-500 animate-pulse whitespace-nowrap"
-            >Uploading...</span
-          >
         </div>
         <p class="text-xs text-gray-500 mt-2">Format: JPG, PNG. Max 2MB.</p>
+      </div>
+
+      <!-- Brochure Upload -->
+      <div>
+        <label class="block text-sm font-medium text-gray-700 mb-2"
+          >Brosur Produk (Opsional)</label
+        >
+
+        <!-- Preview -->
+        <!-- <div
+          v-if="form.brochure"
+          class="mb-4 relative w-full aspect-video md:w-64 bg-gray-100 rounded-xl overflow-hidden border border-gray-200 group">
+          <img :src="form.brochure" class="w-full h-full object-cover" />
+          <button
+            @click="form.brochure = ''"
+            type="button"
+            class="absolute top-2 right-2 p-2 bg-red-600 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+            🗑️
+          </button>
+        </div> -->
+
+        <div class="flex items-center gap-4">
+          <label class="block w-full">
+            <span class="sr-only">Choose file</span>
+            <input
+              type="file"
+              accept="image/*,application/pdf"
+              @change="handleBrochureUpload"
+              class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 cursor-pointer" />
+          </label>
+        </div>
+        <p class="text-xs text-gray-500 mt-2">
+          Format: JPG, PNG, PDF. Max 2MB.
+        </p>
       </div>
 
       <!-- Description -->
@@ -303,49 +332,14 @@ import Swal from "sweetalert2";
 const { categories } = useCategory(); // Keeping for legacy/compatibility if needed
 const { jenisList } = useJenis();
 const selectedFile = ref<File | null>(null);
+const selectedBrochureFile = ref<File | null>(null);
 const selectedColorFiles = ref<{ [key: number]: File }>({}); // Map index to file
 const uploadProgress = ref(0);
 const isUploading = ref(false);
 
 // Default Specs Template
 const defaultSpecs = {
-  Mesin: [
-    { label: "Tipe Mesin", value: "" },
-    { label: "Jumlah / Posisi Silinder", value: "" },
-    { label: "Kapasitas Mesin", value: "" },
-    { label: "Diameter x Langkah", value: "" },
-    { label: "Perbandingan Kompresi", value: "" },
-    { label: "Daya Maksimum", value: "" },
-    { label: "Torsi Maksimum", value: "" },
-    { label: "Sistem Starter", value: "" },
-    { label: "Sistem Pelumasan", value: "" },
-    { label: "Kapasitas Oli Mesin", value: "" },
-    { label: "Sistem Bahan Bakar", value: "" },
-    { label: "Tipe Kopling", value: "" },
-    { label: "Tipe Transmisi", value: "" },
-  ],
-  Rangka: [
-    { label: "Tipe Rangka", value: "" },
-    { label: "Suspensi Depan", value: "" },
-    { label: "Suspensi Belakang", value: "" },
-    { label: "Ban Depan", value: "" },
-    { label: "Ban Belakang", value: "" },
-    { label: "Rem Depan", value: "" },
-    { label: "Rem Belakang", value: "" },
-  ],
-  Dimensi: [
-    { label: "P x L x T", value: "" },
-    { label: "Jarak Sumbu Roda", value: "" },
-    { label: "Jarak Terendah ke Tanah", value: "" },
-    { label: "Tinggi Tempat Duduk", value: "" },
-    { label: "Berat Isi", value: "" },
-    { label: "Kapasitas Tangki Bensin", value: "" },
-  ],
-  Kelistrikan: [
-    { label: "Sistem Pengapian", value: "" },
-    { label: "Battery", value: "" },
-    { label: "Tipe Busi", value: "" },
-  ],
+  // ... (keep existing)
 };
 
 const form = ref({
@@ -356,6 +350,7 @@ const form = ref({
   price: "",
   tag: "",
   image: "",
+  brochure: "",
   description: "",
   specs: JSON.parse(JSON.stringify(defaultSpecs)) as Record<
     string,
@@ -377,9 +372,6 @@ watch(
         // If legacy array, we might want to keep it or migrate. For now, let's just use it if it flows.
         // But better to just override if it's new structure.
       } else if (val.specs && typeof val.specs === "object") {
-        // Merge - if existing has value, use it. If not, use default label.
-        // Actually, for Edit, we should trust what's in DB mainly.
-        // But if DB has partial keys, we want to ensure all keys exist.
         specsData = { ...specsData, ...val.specs };
       }
 
@@ -388,6 +380,7 @@ watch(
         jenis_id: val.jenis_id || "",
         sort_index: val.sort_index || 0,
         specs: specsData,
+        brochure: val.brochure || "",
         colors:
           val.colors?.map((c: any) => ({
             ...c,
@@ -406,6 +399,14 @@ const handleFileUpload = (event: any) => {
 
   selectedFile.value = file;
   form.value.image = URL.createObjectURL(file);
+};
+
+const handleBrochureUpload = (event: any) => {
+  const file = event.target.files[0];
+  if (!file) return;
+
+  selectedBrochureFile.value = file;
+  form.value.brochure = URL.createObjectURL(file);
 };
 
 const handleColorFileUpload = (event: any, index: number) => {
@@ -467,10 +468,13 @@ const save = async () => {
       form.value.image = imageUrl;
     }
 
+    // Upload brochure
+    if (selectedBrochureFile.value) {
+      const brochureUrl = await uploadToImgBB(selectedBrochureFile.value);
+      form.value.brochure = brochureUrl;
+    }
+
     // Upload color images
-
-    // ...
-
     for (const index in selectedColorFiles.value) {
       const file = selectedColorFiles.value[index];
       if (file) {

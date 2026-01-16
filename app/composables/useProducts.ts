@@ -20,6 +20,7 @@ export const useProducts = () => {
 
   const createProduct = async (data: any) => {
     const newId = Date.now().toString(); // Simple ID generation
+    // Data implicitly includes 'brochure' field if present in 'data' argument
     await setDoc(doc(db, "products", newId), {
       ...data,
       id: parseInt(newId),
@@ -29,6 +30,7 @@ export const useProducts = () => {
   };
 
   const updateProduct = async (id: string, data: any) => {
+    // Data implicitly includes 'brochure' field if present in 'data' argument
     await updateDoc(doc(db, "products", id), {
       ...data,
       updatedAt: new Date().toISOString(),
