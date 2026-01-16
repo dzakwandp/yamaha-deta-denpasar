@@ -14,7 +14,7 @@
     <div class="container mx-auto px-4 py-12">
       <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-start">
         <!-- Image Section -->
-        <div class="sticky top-24 self-start">
+        <div class="md:sticky top-24 self-start">
           <div
             class="aspect-4/3 bg-gray-50 rounded-2xl overflow-hidden p-8 border border-gray-100 relative group">
             <!-- Default Image (Fallback) -->
@@ -130,7 +130,7 @@
                 <path
                   d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z" />
               </svg>
-              Whatsapp Sales
+              Whatsapp Widya
             </a>
             <a
               href="#"
@@ -146,12 +146,39 @@
             </h3>
             <div class="space-y-6">
               <template v-if="product.specs && !Array.isArray(product.specs)">
-                <div v-for="group in orderedSpecs" :key="group.name">
-                  <h4
-                    class="font-bold text-gray-800 uppercase text-sm border-b pb-1 mb-3">
-                    {{ group.name }}
-                  </h4>
-                  <div class="grid grid-cols-1 gap-y-2">
+                <div
+                  v-for="group in orderedSpecs"
+                  :key="group.name"
+                  class="border-b border-gray-100 last:border-0">
+                  <button
+                    @click="toggleSpecGroup(group.name)"
+                    class="w-full flex justify-between items-center py-4 text-left group focus:outline-none">
+                    <h4
+                      class="font-bold text-gray-800 uppercase text-sm group-hover:text-red-600 transition-colors">
+                      {{ group.name }}
+                    </h4>
+                    <span
+                      class="transition-transform duration-300 transform"
+                      :class="isGroupOpen(group.name) ? 'rotate-180' : ''">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="20"
+                        height="20"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        class="text-gray-400">
+                        <polyline points="6 9 12 15 18 9"></polyline>
+                      </svg>
+                    </span>
+                  </button>
+
+                  <div
+                    v-show="isGroupOpen(group.name)"
+                    class="grid grid-cols-1 gap-y-2 pb-6 animate-fade-in-down">
                     <div
                       v-for="(spec, index) in group.items"
                       :key="index"
@@ -188,6 +215,89 @@
         </div>
       </div>
     </div>
+
+    <!-- Sales Profile Section -->
+    <section class="py-20 bg-gray-50 border-t border-gray-100" v-if="profile">
+      <div class="container mx-auto px-4">
+        <div
+          class="max-w-4xl mx-auto bg-white rounded-3xl p-8 md:p-12 shadow-xl flex flex-col md:flex-row items-center gap-8 md:gap-12 relative overflow-hidden">
+          <!-- Decor -->
+          <div
+            class="absolute top-0 right-0 w-64 h-64 bg-red-50 rounded-full -mr-32 -mt-32 z-0"></div>
+          <div
+            class="absolute bottom-0 left-0 w-48 h-48 bg-gray-50 rounded-full -ml-24 -mb-24 z-0"></div>
+
+          <!-- Image -->
+          <div class="relative z-10 w-48 h-48 md:w-64 md:h-64 shrink-0">
+            <div
+              class="w-full h-full rounded-full border-4 border-white shadow-lg overflow-hidden">
+              <img
+                v-if="profile.photo"
+                :src="profile.photo"
+                :alt="profile.nama"
+                class="w-full h-full object-cover" />
+              <div
+                v-else
+                class="w-full h-full bg-gray-200 flex items-center justify-center text-4xl text-gray-400">
+                👤
+              </div>
+            </div>
+            <!-- Badge -->
+            <div
+              class="absolute bottom-4 right-4 bg-red-600 text-white text-xs font-bold px-3 py-1 rounded-full shadow-md">
+              Official Sales
+            </div>
+          </div>
+
+          <!-- Content -->
+          <div class="relative z-10 text-center md:text-left flex-1">
+            <h2 class="text-3xl font-bold text-gray-900 mb-2">
+              Kenalan dengan Sales Kami
+            </h2>
+            <p class="text-gray-500 mb-6">
+              Dapatkan konsultasi gratis dan penawaran terbaik untuk motor
+              Yamaha impian Anda.
+            </p>
+
+            <div class="space-y-4">
+              <div>
+                <h3 class="text-2xl font-bold text-gray-900">
+                  {{ profile.nama }}
+                </h3>
+                <p
+                  class="text-red-600 font-bold uppercase text-sm tracking-wide">
+                  Sales Executive
+                </p>
+              </div>
+
+              <div
+                class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start pt-2">
+                <a
+                  :href="`https://wa.me/${formatPhoneForWhatsapp(
+                    profile.nomor_hp
+                  )}?text=Halo ${
+                    profile.nama
+                  }, saya ingin konsultasi motor Yamaha.`"
+                  target="_blank"
+                  class="px-8 py-3 bg-green-500 hover:bg-green-600 text-white rounded-xl font-bold transition-all shadow-lg hover:shadow-green-500/30 flex items-center justify-center gap-2">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="20"
+                    height="20"
+                    fill="currentColor"
+                    class="w-5 h-5"
+                    viewBox="0 0 16 16">
+                    <path
+                      d="M13.601 2.326A7.854 7.854 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.933 7.933 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.898 7.898 0 0 0 13.6 2.326zM7.994 14.521a6.573 6.573 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.557 6.557 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592zm3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.729.729 0 0 0-.529.247c-.182.198-.691.677-.691 1.654 0 .977.71 1.916.81 2.049.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232z" />
+                  </svg>
+                  Chat Widya
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
   </div>
   <div v-else class="min-h-[60vh] flex items-center justify-center">
     <div class="text-center">
@@ -204,6 +314,18 @@
 <script setup lang="ts">
 const route = useRoute();
 const { getProductById } = useProducts();
+const { profiles } = useProfile();
+
+const profile = computed(() => profiles.value[0]);
+
+const formatPhoneForWhatsapp = (phone: string) => {
+  if (!phone) return "";
+  let cleanPhone = phone.replace(/\D/g, "");
+  if (cleanPhone.startsWith("0")) {
+    cleanPhone = "62" + cleanPhone.slice(1);
+  }
+  return cleanPhone;
+};
 
 // Helper to reliably parse ID
 const productId = computed(() => {
@@ -252,6 +374,23 @@ const orderedSpecs = computed(() => {
 const selectedColor = ref<{ name: string; image: string; hex: string } | null>(
   null
 );
+
+// Accordion State
+const openSpecGroups = ref<string[]>(["Mesin"]);
+
+const toggleSpecGroup = (groupName: string) => {
+  if (openSpecGroups.value.includes(groupName)) {
+    openSpecGroups.value = openSpecGroups.value.filter(
+      (name) => name !== groupName
+    );
+  } else {
+    openSpecGroups.value.push(groupName);
+  }
+};
+
+const isGroupOpen = (groupName: string) => {
+  return openSpecGroups.value.includes(groupName);
+};
 
 // Reset selected color when product changes
 watch(product, (newVal) => {

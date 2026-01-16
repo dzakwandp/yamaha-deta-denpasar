@@ -71,13 +71,15 @@ export const useProfile = () => {
     data: Partial<Omit<Profile, "id" | "createdAt" | "updatedAt">>,
     imageFile?: File
   ) => {
+    // Exclude password from initial spread to prevent overwriting with logic below
+    const { password, ...otherData } = data;
     let updateData: any = {
-      ...data,
+      ...otherData,
       updatedAt: Timestamp.now(),
     };
 
-    if (data.password) {
-      updateData.password = btoa(data.password);
+    if (password && password.trim() !== "") {
+      updateData.password = btoa(password);
     }
 
     if (imageFile) {

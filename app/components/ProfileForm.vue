@@ -160,6 +160,7 @@ watch(
   (val) => {
     if (val) {
       form.value = { ...val };
+      form.value.password = ""; // Reset password to avoid double encoding or overwriting
       if (val.photo) {
         previewUrl.value = val.photo;
       }

@@ -29,10 +29,10 @@ onMounted(async () => {
   category.value = await getCategory(categoryId);
 });
 
-const handleSubmit = async (data: any) => {
+const handleSubmit = async ({ data, file }: { data: any; file: any }) => {
   loading.value = true;
   try {
-    await updateCategory(categoryId, data);
+    await updateCategory(categoryId, data, file);
     await Swal.fire({
       title: "Berhasil!",
       text: "Kategori berhasil diupdate!",
