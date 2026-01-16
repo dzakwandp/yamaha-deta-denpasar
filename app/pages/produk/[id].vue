@@ -273,7 +273,7 @@
           <!-- Content -->
           <div class="relative z-10 text-center md:text-left flex-1">
             <h2 class="text-3xl font-bold text-gray-900 mb-2">
-              Kenalan dengan Sales Kami
+              Pemesanan Hubungi Sales Kami
             </h2>
             <p class="text-gray-500 mb-6">
               Dapatkan konsultasi gratis dan penawaran terbaik untuk motor
