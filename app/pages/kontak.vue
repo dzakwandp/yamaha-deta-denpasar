@@ -125,13 +125,14 @@
         <div
           class="md:w-1/2 w-[80%] mx-auto rounded-md overflow-hidden shadow-lg">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3944.5827995172795!2d115.23491207576137!3d-8.635988387805464!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd23f9d75d4edbb%3A0xd0fe0999d925c981!2sJl.%20Gatot%20Subroto%20Tim.%20No.301x%2C%20Kesiman%20Petilan%2C%20Kec.%20Denpasar%20Tim.%2C%20Kota%20Denpasar%2C%20Bali%2080237!5e0!3m2!1sid!2sid!4v1768279741802!5m2!1sid!2sid"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3944.5828025266333!2d115.2374632!3d-8.6359881!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd23f006c7f9ec1%3A0x646dc136794ad36f!2sYAMAHA%20DETA%20GATSU%20TIMUR!5e0!3m2!1sid!2sid!4v1768628676045!5m2!1sid!2sid"
             width="600"
             height="450"
             style="border: 0"
             allowfullscreen=""
             loading="lazy"
-            referrerpolicy="no-referrer-when-downgrade"></iframe>
+            referrerpolicy="no-referrer-when-downgrade">
+          </iframe>
         </div>
       </div>
 
