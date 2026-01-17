@@ -108,7 +108,7 @@
                     }}</span>
                   </a>
                   <a
-                    :href="`https://www.google.com/maps/search/?api=1&query=${profile.alamat}`"
+                    href="https://share.google/ChvX6TwrCtHEyb4ay"
                     target="_blank"
                     class="flex items-start gap-3 p-3 text-gray-600 text-sm hover:bg-gray-50 rounded-xl transition-colors">
                     <span class="mt-0.5">📍</span>
@@ -186,7 +186,7 @@
                   <span class="text-xs font-bold">{{ profile.nomor_hp }}</span>
                 </a>
                 <a
-                  :href="`https://www.google.com/maps/search/?api=1&query=${profile.alamat}`"
+                  href="https://share.google/ChvX6TwrCtHEyb4ay"
                   target="_blank"
                   class="flex items-start gap-3 p-3 bg-gray-50 text-gray-700 rounded-xl hover:bg-gray-100 transition-colors">
                   <span class="mt-0.5">📍</span>
