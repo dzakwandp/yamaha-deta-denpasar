@@ -295,7 +295,7 @@
                 class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start pt-2">
                 <a
                   :href="`https://wa.me/${formatPhoneForWhatsapp(
-                    profile.nomor_hp
+                    profile.nomor_hp,
                   )}?text=Halo ${
                     profile.nama
                   }, saya ingin konsultasi motor Yamaha.`"
@@ -395,7 +395,7 @@ const orderedSpecs = computed(() => {
 });
 
 const selectedColor = ref<{ name: string; image: string; hex: string } | null>(
-  null
+  null,
 );
 
 // Accordion State
@@ -404,7 +404,7 @@ const openSpecGroups = ref<string[]>(["Mesin"]);
 const toggleSpecGroup = (groupName: string) => {
   if (openSpecGroups.value.includes(groupName)) {
     openSpecGroups.value = openSpecGroups.value.filter(
-      (name) => name !== groupName
+      (name) => name !== groupName,
     );
   } else {
     openSpecGroups.value.push(groupName);
@@ -475,21 +475,43 @@ const currentImage = computed(() => {
 });
 
 // SEO
-useHead({
-  title: computed(() =>
+// SEO
+useSeoMeta({
+  title: () =>
     product.value
       ? `${product.value.name} | Yamaha Deta Denpasar`
-      : "Produk Tidak Ditemukan"
-  ),
-  meta: [
-    {
-      name: "description",
-      content: computed(() =>
-        product.value
-          ? `Beli ${product.value.name} di Yamaha Deta Denpasar. Harga Promo Rp ${product.value.price}. ${product.value.description}`
-          : ""
-      ),
-    },
-  ],
+      : "Produk Tidak Ditemukan",
+  ogTitle: () =>
+    product.value
+      ? `${product.value.name} | Yamaha Deta Denpasar`
+      : "Produk Tidak Ditemukan",
+  description: () =>
+    product.value
+      ? `Beli ${product.value.name} di Yamaha Deta Denpasar. Harga OTR Mulai Rp ${product.value.price}. ${product.value.description}`
+      : "Dealer Resmi Motor Yamaha Terbaik di Denpasar.",
+  ogDescription: () =>
+    product.value
+      ? `Beli ${product.value.name} di Yamaha Deta Denpasar. Harga OTR Mulai Rp ${product.value.price}. ${product.value.description}`
+      : "Dealer Resmi Motor Yamaha Terbaik di Denpasar.",
+  ogImage: () => product.value?.image,
+  twitterCard: "summary_large_image",
 });
+
+useSchemaOrg([
+  defineProduct({
+    name: () => product.value?.name,
+    description: () => product.value?.description,
+    image: () => product.value?.image,
+    offers: [
+      {
+        price: () =>
+          product.value?.price
+            ? parseInt(product.value.price.replace(/\D/g, ""))
+            : 0,
+        priceCurrency: "IDR",
+        availability: "https://schema.org/InStock",
+      },
+    ],
+  }),
+]);
 </script>

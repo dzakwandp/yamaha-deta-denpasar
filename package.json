@@ -10,6 +10,8 @@
     "postinstall": "nuxt prepare"
   },
   "dependencies": {
+    "@nuxtjs/robots": "^5.6.7",
+    "@nuxtjs/sitemap": "^7.5.2",
     "@pinia/nuxt": "0.11.3",
     "@tailwindcss/vite": "^4.1.18",
     "@vueup/vue-quill": "^1.0.0-beta.11",
@@ -17,6 +19,7 @@
     "firebase": "^12.7.0",
     "googleapis": "^170.1.0",
     "nuxt": "^4.2.2",
+    "nuxt-schema-org": "^5.0.10",
     "nuxt-vuefire": "^1.1.0",
     "pinia": "^3.0.4",
     "sweetalert2": "^11.26.17",

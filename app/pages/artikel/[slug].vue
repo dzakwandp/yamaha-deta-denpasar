@@ -85,18 +85,59 @@ onMounted(async () => {
 
     article.value = await getArticle(id);
     console.log("Fetched article:", article.value); // Debug log
-
-    if (article.value) {
-      useHead({
-        title: `${article.value.judul} | Yamaha Deta Denpasar`,
-      });
-    }
   } catch (e) {
     console.error(e);
   } finally {
     loading.value = false;
   }
 });
+
+useSeoMeta({
+  title: () =>
+    article.value
+      ? `${article.value.judul} | Yamaha Deta Denpasar`
+      : "Artikel Yamaha Deta Denpasar",
+  ogTitle: () =>
+    article.value
+      ? `${article.value.judul} | Yamaha Deta Denpasar`
+      : "Artikel Yamaha Deta Denpasar",
+  description: () =>
+    article.value
+      ? `Baca artikel ${article.value.judul} di Yamaha Deta Denpasar. ${
+          article.value.artikel.substring(0, 150).replace(/<[^>]*>?/gm, "") +
+          "..."
+        }`
+      : "Berita dan Tips terbaru seputar motor Yamaha.",
+  ogDescription: () =>
+    article.value
+      ? `Baca artikel ${article.value.judul} di Yamaha Deta Denpasar. ${
+          article.value.artikel.substring(0, 150).replace(/<[^>]*>?/gm, "") +
+          "..."
+        }`
+      : "Berita dan Tips terbaru seputar motor Yamaha.",
+  ogImage: () => article.value?.picture,
+  twitterCard: "summary_large_image",
+});
+
+useSchemaOrg([
+  defineArticle({
+    headline: () => article.value?.judul,
+    image: () => article.value?.picture,
+    datePublished: () =>
+      article.value?.createdAt
+        ? new Date(article.value.createdAt.toDate()).toISOString()
+        : undefined,
+    dateModified: () =>
+      article.value?.updatedAt
+        ? new Date(article.value.updatedAt.toDate()).toISOString()
+        : undefined,
+    author: [
+      {
+        name: () => article.value?.penulisName || "Admin",
+      },
+    ],
+  }),
+]);
 
 const formatDate = (timestamp: Timestamp) => {
   if (!timestamp) return "-";
@@ -112,7 +153,9 @@ const formatDate = (timestamp: Timestamp) => {
 /* Safe quill styles for public view */
 .prose img {
   border-radius: 0.75rem;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  box-shadow:
+    0 4px 6px -1px rgb(0 0 0 / 0.1),
+    0 2px 4px -2px rgb(0 0 0 / 0.1);
 }
 .prose h1,
 .prose h2,

@@ -7,7 +7,23 @@ export default defineNuxtConfig({
   vite: {
     plugins: [tailwindcss()],
   },
-  modules: ["nuxt-vuefire", "@pinia/nuxt"],
+  modules: [
+    "nuxt-vuefire",
+    "@pinia/nuxt",
+    "@nuxtjs/sitemap", // Added
+    "@nuxtjs/robots", // Added
+    "nuxt-schema-org", // Added
+  ],
+  site: {
+    url: process.env.NUXT_PUBLIC_SITE_URL || "https://yamahadetadenpasar.com",
+    name: "Yamaha Deta Denpasar",
+  },
+  sitemap: {
+    sources: ["/api/sitemap-routes"],
+  },
+  robots: {
+    disallow: ["/dashadmin", "/dashadmin/*"],
+  },
   vuefire: {
     config: {
       apiKey: process.env.FIREBASE_API_KEY,
@@ -21,6 +37,8 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       imgbbApiKey: process.env.IMGBB_API_KEY,
+      siteUrl:
+        process.env.NUXT_PUBLIC_SITE_URL || "https://yamahadetadenpasar.com",
     },
   },
   app: {
