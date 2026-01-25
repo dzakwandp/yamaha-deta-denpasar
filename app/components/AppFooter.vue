@@ -18,7 +18,7 @@
               v-if="profile?.instagram"
               :href="`https://instagram.com/${profile.instagram.replace(
                 '@',
-                ''
+                '',
               )}`"
               target="_blank"
               class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-red-600 transition-colors">
@@ -39,6 +39,24 @@
                 <path
                   d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
                 <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+              </svg>
+            </a>
+            <!-- TikTok -->
+            <a
+              v-if="profile?.tiktok"
+              :href="profile.tiktok"
+              target="_blank"
+              class="w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center hover:bg-black hover:text-white transition-colors">
+              <span class="sr-only">TikTok</span>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                fill="currentColor"
+                class="bi bi-tiktok"
+                viewBox="0 0 16 16">
+                <path
+                  d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3V0Z" />
               </svg>
             </a>
           </div>
@@ -120,7 +138,7 @@
               </svg>
               <a
                 :href="`https://wa.me/${formatPhoneForWhatsapp(
-                  profile.nomor_hp
+                  profile.nomor_hp,
                 )}`"
                 target="_blank"
                 class="text-gray-400 hover:text-white"
@@ -147,11 +165,29 @@
               <a
                 :href="`https://instagram.com/${profile.instagram.replace(
                   '@',
-                  ''
+                  '',
                 )}`"
                 target="_blank"
                 class="text-gray-400 hover:text-white"
                 >{{ profile.instagram }}</a
+              >
+            </li>
+            <li class="flex items-center gap-3" v-if="profile.tiktok">
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="20"
+                height="20"
+                fill="currentColor"
+                class="bi bi-tiktok w-5 h-5 text-red-500"
+                viewBox="0 0 16 16">
+                <path
+                  d="M9 0h1.98c.144.715.54 1.617 1.235 2.512C12.895 3.389 13.797 4 15 4v2c-1.753 0-3.07-.814-4-1.829V11a5 5 0 1 1-5-5v2a3 3 0 1 0 3 3V0Z" />
+              </svg>
+              <a
+                :href="profile.tiktok"
+                target="_blank"
+                class="text-gray-400 hover:text-white"
+                >{{ profile.tiktok }}</a
               >
             </li>
           </ul>

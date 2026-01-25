@@ -101,6 +101,16 @@
             class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 transition-all"
             placeholder="@budisantoso" />
         </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-700 mb-2"
+            >TikTok</label
+          >
+          <input
+            v-model="form.tiktok"
+            type="text"
+            class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-red-500 transition-all"
+            placeholder="@yamahadetadenpasar" />
+        </div>
       </div>
 
       <div>
@@ -149,6 +159,7 @@ const form = ref({
   alamat: "",
   photo: "",
   password: "",
+  tiktok: "",
 });
 
 const previewUrl = ref("");
@@ -166,7 +177,7 @@ watch(
       }
     }
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 const handleFileChange = (event: any) => {

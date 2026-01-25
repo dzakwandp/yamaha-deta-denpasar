@@ -15,6 +15,7 @@ export interface Profile {
   alamat: string;
   nomor_hp: string;
   instagram: string;
+  tiktok?: string;
   email: string;
   password?: string;
   createdAt?: Timestamp;
@@ -43,7 +44,7 @@ export const useProfile = () => {
 
   const createProfile = async (
     data: Omit<Profile, "id" | "photo" | "createdAt" | "updatedAt">,
-    imageFile?: File
+    imageFile?: File,
   ) => {
     let photoUrl = "";
     if (imageFile) {
@@ -69,7 +70,7 @@ export const useProfile = () => {
   const updateProfile = async (
     id: string,
     data: Partial<Omit<Profile, "id" | "createdAt" | "updatedAt">>,
-    imageFile?: File
+    imageFile?: File,
   ) => {
     // Exclude password from initial spread to prevent overwriting with logic below
     const { password, ...otherData } = data;

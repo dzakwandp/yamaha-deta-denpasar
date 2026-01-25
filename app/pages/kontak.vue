@@ -98,11 +98,28 @@
                 <a
                   :href="`https://instagram.com/${profile.instagram.replace(
                     '@',
-                    ''
+                    '',
                   )}`"
                   target="_blank"
                   class="text-gray-600 hover:text-red-600 font-medium transition-colors">
                   {{ profile.instagram }}
+                </a>
+              </div>
+            </div>
+
+            <!-- TikTok -->
+            <div class="flex items-start gap-4" v-if="profile.tiktok">
+              <div
+                class="w-12 h-12 bg-red-100 text-red-600 rounded-full flex items-center justify-center text-xl shrink-0">
+                🎵
+              </div>
+              <div>
+                <h3 class="font-bold text-lg text-gray-900 mb-1">TikTok</h3>
+                <a
+                  :href="profile.tiktok"
+                  target="_blank"
+                  class="text-gray-600 hover:text-red-600 font-medium transition-colors">
+                  {{ profile.tiktok.replace("https://www.tiktok.com/", "") }}
                 </a>
               </div>
             </div>
@@ -129,7 +146,7 @@
             width="600"
             height="450"
             style="border: 0"
-            allowfullscreen=""
+            allowfullscreen
             loading="lazy"
             referrerpolicy="no-referrer-when-downgrade">
           </iframe>
