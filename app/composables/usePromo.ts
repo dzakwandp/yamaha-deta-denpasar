@@ -21,7 +21,7 @@ export interface Promo {
 
 export const usePromo = () => {
   const db = useFirestore();
-  const { uploadImage } = useImgBB();
+  const { uploadImage } = useFreeimageHost();
 
   const getPromoList = async () => {
     const q = query(collection(db, "promo"), orderBy("createdAt", "desc"));
@@ -49,7 +49,7 @@ export const usePromo = () => {
 
   const createPromo = async (
     data: { description: string },
-    imageFiles: File[]
+    imageFiles: File[],
   ) => {
     const imageUrls: string[] = [];
 
@@ -74,7 +74,7 @@ export const usePromo = () => {
   const updatePromo = async (
     id: string,
     data: { description: string },
-    newImageFiles?: File[]
+    newImageFiles?: File[],
   ) => {
     const docRef = doc(db, "promo", id);
     const updateData: any = {

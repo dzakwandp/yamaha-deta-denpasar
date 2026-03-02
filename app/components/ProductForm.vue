@@ -309,8 +309,8 @@
             loading
               ? "Menyimpan..."
               : isUploading
-              ? "Mengupload..."
-              : "Simpan Produk"
+                ? "Mengupload..."
+                : "Simpan Produk"
           }}
         </button>
       </div>
@@ -390,7 +390,7 @@ watch(
       };
     }
   },
-  { immediate: true }
+  { immediate: true },
 );
 
 const handleFileUpload = (event: any) => {
@@ -421,32 +421,38 @@ const handleColorFileUpload = (event: any, index: number) => {
   form.value.colors[index].image = URL.createObjectURL(file);
 };
 
-const uploadToImgBB = async (file: File) => {
+const uploadToFreeimageHost = async (file: File) => {
   const formData = new FormData();
-  formData.append("image", file);
+  formData.append("key", config.public.freeimageApiKey as string);
+  formData.append("action", "upload");
+  formData.append("source", file);
+  formData.append("format", "json");
 
-  const response = await fetch(
-    `https://api.imgbb.com/1/upload?key=${config.public.imgbbApiKey}`,
-    {
-      method: "POST",
-      body: formData,
-    }
-  );
+  const response = await fetch("https://freeimage.host/api/1/upload", {
+    method: "POST",
+    body: formData,
+  });
 
   const data = await response.json();
-  if (!data.success) {
+
+  if (data.status_code !== 200) {
     throw new Error(data.error?.message || "Upload failed");
   }
 
-  return data.data.url;
+  return data.image.url;
 };
 
 const addSpec = (groupName: string) => {
+  if (!form.value.specs[groupName]) {
+    form.value.specs[groupName] = [];
+  }
   form.value.specs[groupName].push({ label: "", value: "" });
 };
 
 const removeSpec = (groupName: string, index: number) => {
-  form.value.specs[groupName].splice(index, 1);
+  if (form.value.specs[groupName]) {
+    form.value.specs[groupName].splice(index, 1);
+  }
 };
 
 const addColor = () => {
@@ -464,13 +470,15 @@ const save = async () => {
 
     // Upload main image
     if (selectedFile.value) {
-      const imageUrl = await uploadToImgBB(selectedFile.value);
+      const imageUrl = await uploadToFreeimageHost(selectedFile.value);
       form.value.image = imageUrl;
     }
 
     // Upload brochure
     if (selectedBrochureFile.value) {
-      const brochureUrl = await uploadToImgBB(selectedBrochureFile.value);
+      const brochureUrl = await uploadToFreeimageHost(
+        selectedBrochureFile.value,
+      );
       form.value.brochure = brochureUrl;
     }
 
@@ -479,7 +487,7 @@ const save = async () => {
       const file = selectedColorFiles.value[index];
       if (file) {
         try {
-          const imageUrl = await uploadToImgBB(file);
+          const imageUrl = await uploadToFreeimageHost(file);
           // @ts-ignore
           if (form.value.colors[index]) {
             // @ts-ignore

@@ -16,11 +16,11 @@ export interface Banner {
 
 export const useBanners = () => {
   const db = useFirestore();
-  const { uploadImage, isUploading } = useImgBB();
+  const { uploadImage, isUploading } = useFreeimageHost();
 
   // Reactive collection ordered by createdAt desc
   const banners = useCollection<Banner>(
-    query(collection(db, "banners"), orderBy("createdAt", "desc"))
+    query(collection(db, "banners"), orderBy("createdAt", "desc")),
   );
 
   const addBanner = async (file: File) => {

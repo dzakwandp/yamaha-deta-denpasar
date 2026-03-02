@@ -21,7 +21,7 @@ export interface Harga {
 
 export const useHarga = () => {
   const db = useFirestore();
-  const { uploadImage } = useImgBB();
+  const { uploadImage } = useFreeimageHost();
 
   const getHargaList = async () => {
     const q = query(collection(db, "harga"), orderBy("createdAt", "desc"));
@@ -49,7 +49,7 @@ export const useHarga = () => {
 
   const createHarga = async (
     data: { description: string },
-    imageFiles: File[]
+    imageFiles: File[],
   ) => {
     const imageUrls: string[] = [];
 
@@ -74,7 +74,7 @@ export const useHarga = () => {
   const updateHarga = async (
     id: string,
     data: { description: string },
-    newImageFiles?: File[]
+    newImageFiles?: File[],
   ) => {
     const docRef = doc(db, "harga", id);
     const updateData: any = {

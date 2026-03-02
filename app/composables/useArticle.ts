@@ -28,7 +28,7 @@ export interface Article {
 
 export const useArticle = () => {
   const db = useFirestore();
-  const { uploadImage } = useImgBB();
+  const { uploadImage } = useFreeimageHost();
   const { getProfile } = useProfile();
 
   const generateSlug = (title: string) => {
@@ -68,7 +68,7 @@ export const useArticle = () => {
           ...data,
           penulisName: authorName,
         });
-      })
+      }),
     );
 
     // Sort again
@@ -100,7 +100,7 @@ export const useArticle = () => {
       Article,
       "id" | "createdAt" | "updatedAt" | "penulisName" | "slug"
     >,
-    imageFile?: File
+    imageFile?: File,
   ) => {
     let imageUrl = data.picture || "";
 
@@ -138,7 +138,7 @@ export const useArticle = () => {
     data: Partial<
       Omit<Article, "id" | "createdAt" | "updatedAt" | "penulisName">
     >,
-    imageFile?: File
+    imageFile?: File,
   ) => {
     const docRef = doc(db, "articles", id);
     let updateData: any = {

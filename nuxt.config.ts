@@ -36,7 +36,7 @@ export default defineNuxtConfig({
   },
   runtimeConfig: {
     public: {
-      imgbbApiKey: process.env.IMGBB_API_KEY,
+      freeimageApiKey: process.env.FREEIMAGE_API_KEY,
       siteUrl:
         process.env.NUXT_PUBLIC_SITE_URL || "https://yamahadetadenpasar.com",
     },
@@ -51,6 +51,7 @@ export default defineNuxtConfig({
             "Melayani pembelian motor YAMAHA CASH maupun CREDIT dengan harga dan pelayanan TERBAIK di Denpasar.",
         },
         { name: "viewport", content: "width=device-width, initial-scale=1" },
+        { name: "referrer", content: "no-referrer" },
       ],
       link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
     },

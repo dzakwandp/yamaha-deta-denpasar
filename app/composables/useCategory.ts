@@ -18,7 +18,7 @@ export interface Category {
 
 export const useCategory = () => {
   const db = useFirestore();
-  const { uploadImage } = useImgBB();
+  const { uploadImage } = useFreeimageHost();
 
   // Reactive list of categories
   const categories = useCollection(collection(db, "categories"));
@@ -35,7 +35,7 @@ export const useCategory = () => {
 
   const createCategory = async (
     data: Omit<Category, "id" | "createdAt" | "updatedAt">,
-    imageFile?: File
+    imageFile?: File,
   ) => {
     let imageUrl = data.image || "";
 
@@ -56,7 +56,7 @@ export const useCategory = () => {
   const updateCategory = async (
     id: string,
     data: Partial<Omit<Category, "id" | "createdAt" | "updatedAt">>,
-    imageFile?: File
+    imageFile?: File,
   ) => {
     const docRef = doc(db, "categories", id);
     let updateData: any = {
