@@ -16,7 +16,7 @@ export interface Banner {
 
 export const useBanners = () => {
   const db = useFirestore();
-  const { uploadImage, isUploading } = useFreeimageHost();
+  const { uploadImage, isUploading } = useCloudinary();
 
   // Reactive collection ordered by createdAt desc
   const banners = useCollection<Banner>(

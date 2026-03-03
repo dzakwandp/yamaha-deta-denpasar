@@ -21,7 +21,7 @@ export interface Harga {
 
 export const useHarga = () => {
   const db = useFirestore();
-  const { uploadImage } = useFreeimageHost();
+  const { uploadImage } = useCloudinary();
 
   const getHargaList = async () => {
     const q = query(collection(db, "harga"), orderBy("createdAt", "desc"));

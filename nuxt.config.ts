@@ -35,8 +35,11 @@ export default defineNuxtConfig({
     },
   },
   runtimeConfig: {
+    // Private keys are only available on the server
+    cloudinaryApiSecret: process.env.CLOUDINARY_API_SECRET,
     public: {
-      freeimageApiKey: process.env.FREEIMAGE_API_KEY,
+      cloudinaryCloudName: process.env.CLOUDINARY_CLOUD_NAME,
+      cloudinaryApiKey: process.env.CLOUDINARY_API_KEY,
       siteUrl:
         process.env.NUXT_PUBLIC_SITE_URL || "https://yamahadetadenpasar.com",
     },

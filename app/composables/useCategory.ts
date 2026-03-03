@@ -18,7 +18,7 @@ export interface Category {
 
 export const useCategory = () => {
   const db = useFirestore();
-  const { uploadImage } = useFreeimageHost();
+  const { uploadImage } = useCloudinary();
 
   // Reactive list of categories
   const categories = useCollection(collection(db, "categories"));

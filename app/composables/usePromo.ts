@@ -21,7 +21,7 @@ export interface Promo {
 
 export const usePromo = () => {
   const db = useFirestore();
-  const { uploadImage } = useFreeimageHost();
+  const { uploadImage } = useCloudinary();
 
   const getPromoList = async () => {
     const q = query(collection(db, "promo"), orderBy("createdAt", "desc"));

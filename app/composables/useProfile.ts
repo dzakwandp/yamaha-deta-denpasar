@@ -24,7 +24,7 @@ export interface Profile {
 
 export const useProfile = () => {
   const db = useFirestore();
-  const { uploadImage, isUploading: isImageUploading } = useFreeimageHost();
+  const { uploadImage, isUploading: isImageUploading } = useCloudinary();
 
   // Reactive collection
   const profiles = useCollection<Profile>(collection(db, "profiles"));

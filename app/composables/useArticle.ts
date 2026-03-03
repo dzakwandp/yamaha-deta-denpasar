@@ -28,7 +28,7 @@ export interface Article {
 
 export const useArticle = () => {
   const db = useFirestore();
-  const { uploadImage } = useFreeimageHost();
+  const { uploadImage } = useCloudinary();
   const { getProfile } = useProfile();
 
   const generateSlug = (title: string) => {

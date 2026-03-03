@@ -8,10 +8,23 @@ export const useFreeimageHost = () => {
     uploadError.value = null;
 
     try {
+      // Convert file to Base64 string
+      const base64String = await new Promise<string>((resolve, reject) => {
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = () => {
+          // Remove the "data:image/jpeg;base64," prefix for the API
+          const result = reader.result as string;
+          const base64 = result.split(",")[1] || "";
+          resolve(base64);
+        };
+        reader.onerror = (error) => reject(error);
+      });
+
       const formData = new FormData();
       formData.append("key", config.public.freeimageApiKey as string);
       formData.append("action", "upload");
-      formData.append("source", file);
+      formData.append("source", base64String);
       formData.append("format", "json");
 
       const response = await fetch("https://freeimage.host/api/1/upload", {
