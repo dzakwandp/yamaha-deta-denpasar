@@ -112,7 +112,7 @@
               <span class="text-gray-400 font-bold">{{ profile.nama }}</span>
             </li>
             <li class="flex items-start gap-3">
-              <a href="https://share.google/ChvX6TwrCtHEyb4ay" target="_blank">
+              <a href="https://maps.app.goo.gl/ug9f8SRFZSYQ1a7T8?g_st=iw" target="_blank">
                 <span class="text-red-500 mt-1">📍</span>
                 <span class="text-gray-400">{{ profile.alamat }}</span>
               </a>
