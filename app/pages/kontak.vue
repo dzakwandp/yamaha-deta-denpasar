@@ -142,7 +142,7 @@
         <div
           class="md:w-1/2 w-[80%] mx-auto rounded-md overflow-hidden shadow-lg">
           <iframe
-            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3944.5828025266333!2d115.2374632!3d-8.6359881!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd23f006c7f9ec1%3A0x646dc136794ad36f!2sYAMAHA%20DETA%20GATSU%20TIMUR!5e0!3m2!1sid!2sid!4v1768628676045!5m2!1sid!2sid"
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d1573.6187029278803!2d115.24128579515896!3d-8.634610166300487!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dd23f002f59ed7d%3A0x805cb1b5a543944c!2sYamaha%20Deta%20Denpasar%20Timur!5e1!3m2!1sid!2sid!4v1792243085811!5m2!1sid!2sid"
             width="600"
             height="450"
             style="border: 0"
